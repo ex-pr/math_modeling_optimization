@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Daria Dubovskaia">
+
+<title>Homework 1: Introduction to Optimization and Least Squares</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Introduction_Optimization_ Least_Squares_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Introduction_Optimization_ Least_Squares_files/libs/quarto-html/quarto.js"></script>
+<script src="Introduction_Optimization_ Least_Squares_files/libs/quarto-html/popper.min.js"></script>
+<script src="Introduction_Optimization_ Least_Squares_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Introduction_Optimization_ Least_Squares_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Introduction_Optimization_ Least_Squares_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Introduction_Optimization_ Least_Squares_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Introduction_Optimization_ Least_Squares_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Introduction_Optimization_ Least_Squares_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Introduction_Optimization_ Least_Squares_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Homework 1: Introduction to Optimization and Least Squares</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Daria Dubovskaia </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="problem-1-gradient-descent" class="level2">
+<h2 class="anchored" data-anchor-id="problem-1-gradient-descent">Problem 1: Gradient Descent</h2>
+<p>a) Consider the mathematical function defined on <span class="math inline">\(f: \mathbb{R}^2\,\to\, \mathbb{R}\)</span>:</p>
+<p><span class="math display">\[
+f(x,y) = (x-1)^2 + (y+2)^2,
+\]</span></p>
+<p>Find the single critical point of this function and show that it is a local minimum (in this case, this will also be a global minimum).</p>
+<p><strong>Solution:</strong></p>
+<p>First, we find the critical points by calculating the partial derivatives and setting them equal to zero. The solution is <span class="math inline">\(x_{*} = 1, y_{*} = -2\)</span>.</p>
+<p><span class="math display">\[
+\frac{\partial f}{\partial x} = 2(x-1) + 0 = 0,\]</span> <span class="math display">\[\frac{\partial f}{\partial y} = 0 + 2(y+2) = 0,\]</span> the Hessian matrix from second partial derivatives: <span class="math display">\[
+H = \begin{pmatrix}
+f_{xx} &amp; f_{xy} \\
+f_{yx} &amp; f_{yy} \\
+\end{pmatrix} =
+\begin{pmatrix}
+\frac{\partial^2f}{\partial x^2} &amp; \frac{\partial^2f}{\partial xy} \\
+\frac{\partial^2f}{\partial yx} &amp; \frac{\partial^2f}{\partial y^2} \\
+\end{pmatrix}, \\
+\]</span> the second derivatives to determine the nature of the critical point: <span class="math display">\[
+\frac{\partial^2f}{\partial x^2} = 2,  \]</span> <span class="math display">\[\frac{\partial^2f}{\partial y^2} = 2, \\
+\]</span></p>
+<p><span class="math display">\[\frac{\partial^2f}{\partial xy} = \frac{\partial^2f}{\partial yx} = 0,\]</span></p>
+<p>the resulting Hessian matrix is always symmetric (Kolter, 2008, p.&nbsp;22): <span class="math display">\[
+H =
+\begin{pmatrix}
+2 &amp; 0 \\
+0 &amp; 2 \\
+\end{pmatrix}.
+\]</span></p>
+<p>If the Hessian matrix is positive definite, then the stationary point is a local minimum. If it is negative definite, then the point is a maximum. Our matrix does not involve any variable, it is always positive definite in the whole search domain, the solution at point (1, -2) is the global minimum. Or we can explain it this way: the provided function is a sum of squares, it is always non-negative, and the function increases as we move away from the point (1, -2), it means that the critical point is a local minimum and a global minimum.</p>
+<p>Solution in python to support the above conclusion is below. The optimal point is very close to (1,−2), which was the theoretical global minimum (and a local minimum) computed above. The function value at this optimal point is almost zero, which confirms that it is indeed a minimum.</p>
+<div id="589f18da" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Import libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> minimize</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="bc91484e" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Function f(x, y)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(params):</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> params</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (x <span class="op">-</span> <span class="dv">1</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> (y <span class="op">+</span> <span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Scipy's minimize function to find the minimum</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>initial_guess <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">0</span>]  <span class="co">#Initial guess</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> minimize(f, initial_guess)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Results</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Optimal point:"</span>, result.x)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Function value at this optimal point:"</span>, result.fun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Optimal point: [ 0.99999998 -2.00000003]
+Function value at this optimal point: 1.1411716670850257e-15</code></pre>
+</div>
+</div>
+<p>b) Now consider a new objective function that depends on a parameter <span class="math inline">\(b\)</span>: <span class="math display">\[
+f(x,y) = x^2 + by^2
+\]</span> Here we will look at two different values of <span class="math inline">\(b\)</span>, <span class="math inline">\(b=3\)</span> and <span class="math inline">\(b=10\)</span>. The global minimum of this function occurs at the point <span class="math inline">\(x^* = 0\)</span>, <span class="math inline">\(y^*=0\)</span> no matter what the value of <span class="math inline">\(b\)</span>. Suppose that we didn’t know this and wanted to find the minimum of this function using gradient descent instead of direct calculation.</p>
+<ul>
+<li>First write code to perform the gradient descent algorithm, that is perform the iteration: <span class="math display">\[
+\mathbf{v}_{n+1} = \mathbf{v}_n - k \nabla f(\mathbf{v}_n),
+\]</span></li>
+</ul>
+<p>where the vector <span class="math inline">\(\mathbf{v} = \begin{bmatrix} x &amp; y\end{bmatrix}^T\)</span> and <span class="math inline">\(k\)</span> is the learning rate.</p>
+<p><strong>Solution:</strong></p>
+<p>The gradient (Boyd, 2008, p.466): <span class="math display">\[
+\nabla f(x, y) = \begin{bmatrix} \frac{\partial f}{\partial x} \\ \frac{\partial f}{\partial y} \end{bmatrix} = \begin{bmatrix} 2x \\ 2by \end{bmatrix}
+\]</span>,</p>
+<p>The iteration step: <span class="math display">\[
+\begin{bmatrix} x_{n+1} \\ y_{n+1} \end{bmatrix} =  \begin{bmatrix} x_n \\ y_n \end{bmatrix} - k\begin{bmatrix} 2x_n \\ 2by_n \end{bmatrix}
+\]</span></p>
+<p>In Python, we first defined the functions for <span class="math inline">\(f(x,y)\)</span> (for reference), the gradient <span class="math inline">\(\nabla f(x, y)\)</span> and the gradient descent algorithm (Induraj, 2020) without any specific initial conditions.The function to calculate partial derivatives was used to find gradient for the gradient descent step. We also kept result of each iteration step for a further use. Gradient descent step updated values x,y in each iteration separately:</p>
+<p><span class="math display">\[x_{n+1} = x_n - 2kx_n, \]</span> <span class="math display">\[y_{n+1} = y_n - 2kby_n.
+\]</span></p>
+<p>The iteration converges satisfy:</p>
+<p><span class="math display">\[|1-2k|&lt;1, \]</span> <span class="math display">\[|1-2bk|&lt;1, \\
+\]</span> thus, for the <span class="math inline">\(x\)</span>: <span class="math inline">\(0&lt;k&lt;1\)</span>, for the <span class="math inline">\(y\)</span>: <span class="math inline">\(0&lt;k&lt;\frac{1}{b}.\)</span></p>
+<p>As a result, for b=3,k should be below 0.33, for b=10, it should be below 0.1. For b=10, learning rate is smaller for stability.</p>
+<p>Next, we created a function to compute the final error at the end of 100 iterations, this error shows how close the gradient descent is to the global minimum (for this function it is (0,0)):</p>
+<p><span class="math display">\[error = \sqrt{x_{100}^2+y_{100}^2}.\]</span></p>
+<div id="e8e26cba" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Function</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(x, y, b):</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> b<span class="op">*</span>y<span class="op">**</span><span class="dv">2</span> <span class="co">#Not used but keep for problem statement</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Partial derivitives for gradient</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> df_dx(x, y,b):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> x</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> df_dy(x, y, b):</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> y <span class="op">*</span> b</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Gradient descnet algorithm</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gradient_descent(start_x, start_y, lr, b, num_iteration):</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Set up starting conditions</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  x <span class="op">=</span> start_x</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  y <span class="op">=</span> start_y</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  keep_info <span class="op">=</span> [(x, y)] <span class="co">#Keep track of iteractions</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num_iter): <span class="co">#For loop to go through iterations</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    grad_x <span class="op">=</span> df_dx(x, y, b) <span class="co">#Calculate gradient</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    grad_y <span class="op">=</span> df_dy(x, y, b)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x <span class="op">-</span> lr <span class="op">*</span> grad_x <span class="co">#Calculate new values</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> y <span class="op">-</span> lr <span class="op">*</span> grad_y</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    keep_info.append((x, y)) <span class="co">#Keep results</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> keep_info</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate error at final step</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> final_error(keep_info):</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> keep_info[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sqrt(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Then test the performance of your algorithm as a function of the learning rates <span class="math inline">\(k\)</span> by performing 100 iterations of the algorithm for 100 values of <span class="math inline">\(k\)</span> equally spaced between <span class="math inline">\(k=0.01\)</span> and <span class="math inline">\(k=0.3\)</span>. Start with an initial guess of <span class="math inline">\(\mathbf{v}_0 = \begin{bmatrix} b &amp; 1\end{bmatrix}^T\)</span>. Do this for <span class="math inline">\(b=3\)</span> and <span class="math inline">\(b=10\)</span>. Make separate plots for <span class="math inline">\(b=3\)</span> and <span class="math inline">\(b=10\)</span> of the log base 10 of the error (in this case it is <span class="math inline">\(\sqrt{x_{100}^2+y_{100}^2}\)</span>) for the final value of the iteration versus the value of <span class="math inline">\(k\)</span>. How does learning rate relate to the final value of the error? For which value of <span class="math inline">\(b\)</span> does the algorithm have the ability to converge fastest (have the lowest value of the error at the end)?</li>
+</ul>
+<p>Note: For some combinations of <span class="math inline">\(k\)</span> and <span class="math inline">\(b\)</span>, the algorithm won’t converge to the right answer, i.e.&nbsp;the error will grow with time. To make your plot easier to read, don’t plot the error for iterations that didn’t converge.</p>
+<p><strong>Solution:</strong></p>
+<p>We tested the gradient descent algorithm from the previous step for 100 values of k from 0.01 to 0.3, number of iterations was 100, for 2 different values of b (3 and 10). The initial guess was <span class="math inline">\(x_0=b, y_0=1\)</span>, initial error for these values was also calculated to compare with further error to check whether gradient descent decreases error. After we run the gradient descent algorithm, we kept learning rates that improved error.</p>
+<p>Next, we plotted the log base 10 of the error for the final value of the iteration versus the value of <span class="math inline">\(k\)</span> for each b.</p>
+<p>For <span class="math inline">\(b=3\)</span>, error decreased as learning rate increased, but after k=0.25, error increased indicating divergence. The lowest final error was 2.403e-30 at learning rate 0.25.</p>
+<p>For <span class="math inline">\(b=10\)</span>, error decreased as learning rate increased, but after k=0.0.089, error increased indicating divergence. The lowest final error was 3.003e-08 at learning rate 0.089.</p>
+<p>Though theoretical k values were slightly different, it is explainable. When we run only 100 iterations, the lowest final error was achieved for a learning rate a bit lower than the theoretical maximum. k=0.089 for b=10 or k=0.25 for b=3 about the best trade-off between making large enough steps be closer to the minimum and not overshooting too much.</p>
+<div id="2925fbe5" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Test settings</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Set seed</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>lr_test <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="fl">0.3</span>, <span class="dv">100</span>) <span class="co">#Learning rate between 0.001 and 0.3, 100 values</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>num_iter <span class="op">=</span> <span class="dv">100</span>  <span class="co">#Number of iterations for gradient descent function</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>b_val <span class="op">=</span> [<span class="dv">3</span>, <span class="dv">10</span>]  <span class="co">#b values per problem statement</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> b_val:</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  start_x, start_y <span class="op">=</span> i, <span class="dv">1</span> <span class="co">#Initial values per problem statement</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  error_0 <span class="op">=</span> np.sqrt(start_x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> start_y<span class="op">**</span><span class="dv">2</span>) <span class="co">#Error from initial values</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  lr_converge <span class="op">=</span> [] <span class="co">#Keep valid learning rates when algorith converged</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  error_converge <span class="op">=</span> [] <span class="co">#Keep valid errors when algorith converged</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> j <span class="kw">in</span> lr_test:</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    keep_results <span class="op">=</span> gradient_descent(start_x, start_y, j, i, num_iter)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    err <span class="op">=</span> final_error(keep_results)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Record when error decreased from the initial point</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> err <span class="op">&lt;</span> error_0:</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>      lr_converge.append(j)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>      error_converge.append(err)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Plot log10(final error) vs lr for current b</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  plt.figure()</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  plt.plot(lr_converge, np.log10(error_converge), <span class="st">'bo-'</span>, label<span class="op">=</span><span class="ss">f"b = </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  plt.xlabel(<span class="st">"k, learning rate"</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  plt.ylabel(<span class="st">"log10(final error)"</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  plt.title(<span class="ss">f"Final Error vs Learning Rate for b = </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  plt.grid(<span class="va">True</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  plt.legend()</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  plt.show()</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Best learning rate for this b meaning lowest error</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> error_converge:</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    best_lr <span class="op">=</span> lr_converge[np.argmin(error_converge)]</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"For b=</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">, best convergence k=</span><span class="sc">{</span>best_lr<span class="sc">:.3f}</span><span class="ss">, error=</span><span class="sc">{</span><span class="bu">min</span>(error_converge)<span class="sc">:.3e}</span><span class="ss">"</span>)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span>:</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"For b=</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">, no convergent lr in the given range."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_Optimization_%20Least_Squares_files/figure-html/cell-5-output-1.png" width="596" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>For b=3, best convergence k=0.250, error=2.403e-30
+For b=10, best convergence k=0.089, error=3.003e-08</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_Optimization_%20Least_Squares_files/figure-html/cell-5-output-3.png" width="587" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>As <span class="math inline">\(k\)</span> increases, for one or both values of <span class="math inline">\(b\)</span>, you will observe a point where the trend of final error versus learning rate reverses direction. Pick a value of <span class="math inline">\(k\)</span> very close to the point where this occurs, and make a contour plot of the function <span class="math inline">\(f\)</span> and the trajectory of the iterations for the gradient descent algorithm for that value of <span class="math inline">\(k\)</span> superimposed over the contour plot. What do you observe?</li>
+</ul>
+<p>Note: The differences that you observe here are a special case of a more general phenomenon: the speed of convergence of gradient descent depends on something called the <em>condition number</em> of the <em>Hessian</em> matrix (the matrix of the 2nd order partial derivatives) of the target function. The condition number for a symmetric matrix is just the ratio of the largest to smallest eigenvalues, in this case the condition number is <span class="math inline">\(b\)</span> (or 1/<span class="math inline">\(b\)</span>). Gradient descent performs worse and worse the larger the condition number (and large condition numbers are problematic for a wide variety of other numerical methods).</p>
+<p><strong>Solution:</strong></p>
+<p>We built two contour plots with the gradient descent trajectory for different vales of learning rate and b.</p>
+<p>For b=3, the point below the point where we observe reversing direction is k=0.24. The black path moves steadily to the global minimum (0,0) with some oscillation closer to (0,0), but we still obv=serve convergence. The function has elliptical shape which is not too stretched allowing for stable descent. (Boyd, 2008, p.466)</p>
+<p>For b=10, higher condition number, learning rate was chosen equal to 0.08. The black path starts oscillating when moving to the global minimum, it fails to fully converge. b=10 is a high condition number, even though we chose learning rate below reversal point, it was still too large for this b.</p>
+<p>As it was already discussed above, higher condition numbers require smaller learning rates for stable convergence. We may try smaller learning rates.</p>
+<div id="c78fdcdf" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Learning rates near the reversal points</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>k_b3 <span class="op">=</span> <span class="fl">0.24</span>  </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>k_b10 <span class="op">=</span> <span class="fl">0.08</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#For b=3, gradient descent</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>trajectory <span class="op">=</span> np.array(gradient_descent(start_x<span class="op">=</span>b, start_y<span class="op">=</span><span class="dv">1</span>, lr<span class="op">=</span>k_b3, b<span class="op">=</span>b, num_iteration<span class="op">=</span><span class="dv">100</span>))</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Grid for contour plot</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>x_vals <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">100</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>y_vals <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">100</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> np.meshgrid(x_vals, y_vals)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> f(X, Y, b)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot for b=3</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>plt.contour(X, Y, Z, levels<span class="op">=</span><span class="dv">50</span>)  </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>plt.plot(trajectory[:, <span class="dv">0</span>], trajectory[:, <span class="dv">1</span>], <span class="st">'ko-'</span>, markersize<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Gradient Descent'</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>plt.scatter(<span class="dv">0</span>, <span class="dv">0</span>, color<span class="op">=</span><span class="st">'red'</span>, marker<span class="op">=</span><span class="st">'x'</span>, s<span class="op">=</span><span class="dv">100</span>, label<span class="op">=</span><span class="st">'Global Minimum'</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"Contour plot of the function and the trajectory of the iterations for the gradient descent algorithm for k=</span><span class="sc">{</span>k_b3<span class="sc">}</span><span class="ss">, b=</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#For b=10, gradient descent</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>trajectory <span class="op">=</span> np.array(gradient_descent(start_x<span class="op">=</span>b, start_y<span class="op">=</span><span class="dv">1</span>, lr<span class="op">=</span>k_b10, b<span class="op">=</span>b, num_iteration<span class="op">=</span><span class="dv">100</span>))</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot for b=3</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> f(X, Y, b)</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>plt.contour(X, Y, Z, levels<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>plt.plot(trajectory[:, <span class="dv">0</span>], trajectory[:, <span class="dv">1</span>], <span class="st">'ko-'</span>, markersize<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Gradient Descent'</span>)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>plt.scatter(<span class="dv">0</span>, <span class="dv">0</span>, color<span class="op">=</span><span class="st">'red'</span>, marker<span class="op">=</span><span class="st">'x'</span>, s<span class="op">=</span><span class="dv">100</span>, label<span class="op">=</span><span class="st">'Global Minimum'</span>)</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"Contour plot of the function and the trajectory of the iterations for the gradient descent algorithm for k=</span><span class="sc">{</span>k_b10<span class="sc">}</span><span class="ss">, b=</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_Optimization_%20Least_Squares_files/figure-html/cell-6-output-1.png" width="938" height="523" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_Optimization_%20Least_Squares_files/figure-html/cell-6-output-2.png" width="949" height="523" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-2-solving-least-squares-problems" class="level1">
+<h1>Problem 2: Solving Least Squares Problems</h1>
+<p>Generate a random <span class="math inline">\(20\times 10\)</span> matrix <span class="math inline">\(A\)</span> and a random 20-vector <span class="math inline">\(b\)</span> (use a Gaussian distribution). Then, solve the least squares problem: <span class="math display">\[
+\min_{\mathbf{x}\in \mathbb{R}^{10}} \|A\mathbf{x} - \mathbf{b}\|^2
+\]</span> in the following ways:</p>
+<p>a) Multiply <span class="math inline">\(\mathbf{b}\)</span> by the Morse-Penrose Pseudoinverse <span class="math inline">\(A^+\)</span>.</p>
+<p><strong>Solution</strong></p>
+<p>The Morse-Penrose Pseudoinverse:</p>
+<p><span class="math display">\[
+A^† = (A^T A)^{−1}A^T,
+\]</span> when <span class="math inline">\(A^𝑇𝐴\)</span> is invertible.</p>
+<p>The approximate solution of the least squares problem in the simple form: <span class="math display">\[
+\hat{x} = A^†b = (A^T A)^{−1}A^Tb.
+\]</span></p>
+<p><span class="math inline">\(\hat{x}\)</span> is the unique vector that minimizes <span class="math inline">\(||Ax-b||^2\)</span> making it the optimal solution (Boyd, 2018, p.&nbsp;230).</p>
+<p>In Python, we generated a random 20x10 matrix <span class="math inline">\(A\)</span>, a random 20-vector (using a Gaussian distribution), and calculated solution using the above equations.</p>
+<div id="b26bbd29" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Set seed</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Generate random matrix</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>A_matrix <span class="op">=</span> np.random.randn(<span class="dv">20</span>, <span class="dv">10</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Generate random vector</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>b_vector <span class="op">=</span> np.random.randn(<span class="dv">20</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>A_matrix, b_vector</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Pseudoinvers</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>A_pseudoinv <span class="op">=</span> np.linalg.pinv(A_matrix)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>x_pseudoinv <span class="op">=</span> A_pseudoinv <span class="op">@</span> b_vector</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Solution with Moore-Penrose Pseudoinverse:"</span>, x_pseudoinv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Solution with Moore-Penrose Pseudoinverse: [-0.07701866  0.261767   -0.15098773 -0.46088204 -0.48264709  0.01793768
+  0.36960592 -0.35799919  0.1653507   0.28651436]</code></pre>
+</div>
+</div>
+<p>b) Use built in functions to solve the least squares problem (i.e.&nbsp;in python numpy.lstsq, in R lm, and in Julia the backslash operator).</p>
+<p>The solutuion using np.linalg.lstsq() is the same as using Pseudoinverse.</p>
+<div id="b325e155" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Solution with built-in function</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>x_lstsq, _, _, _ <span class="op">=</span> np.linalg.lstsq(A_matrix, b_vector, rcond<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Solution with numpy.linalg.lstsq:"</span>, x_lstsq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Solution with numpy.linalg.lstsq: [-0.07701866  0.261767   -0.15098773 -0.46088204 -0.48264709  0.01793768
+  0.36960592 -0.35799919  0.1653507   0.28651436]</code></pre>
+</div>
+</div>
+<p>c) Using the <span class="math inline">\(QR\)</span> factorization of <span class="math inline">\(A\)</span>. This factorization rewrites <span class="math inline">\(A\)</span> as: <span class="math display">\[
+A = \begin{bmatrix} Q &amp; 0\end{bmatrix} \begin{bmatrix} R &amp; 0 \end{bmatrix}^T,
+\]</span> where <span class="math inline">\(Q\)</span> is an orthonormal matrix and <span class="math inline">\(R\)</span> is upper triangular. The least squares solution equals: <span class="math display">\[
+\mathbf{x} = R^{-1}Q^T\mathbf{b}
+\]</span></p>
+<p>The QR factorization can be used to compute the least squares approximate solution. To compute <span class="math inline">\(\hat{x}\)</span> we first multiply <span class="math inline">\(b\)</span> by <span class="math inline">\(Q^T\)</span>; then we compute <span class="math inline">\(R^{−1}(Q^Tb)\)</span> using back substitution (Boyd, 2018, p.&nbsp;231). The solution using QR factorization is the same as using Pseudoinverse and built-in function.</p>
+<div id="b3d62ca5" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#QR factorization</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>Q, R <span class="op">=</span> np.linalg.qr(A_matrix)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Solve for x</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>x_qr <span class="op">=</span> np.linalg.inv(R) <span class="op">@</span> Q.T <span class="op">@</span> b_vector</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Solution with QR factorization:"</span>, x_qr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Solution with QR factorization: [-0.07701866  0.261767   -0.15098773 -0.46088204 -0.48264709  0.01793768
+  0.36960592 -0.35799919  0.1653507   0.28651436]</code></pre>
+</div>
+</div>
+<p>d) Verify that each of these solutions are nearly equal and that the residuals <span class="math inline">\(A\mathbf{x}-\mathbf{b}\)</span> are orthogonal to the vector <span class="math inline">\(A\mathbf{x}\)</span></p>
+<p><strong>Solution:</strong></p>
+<p>Thus, all three methods solve the same equation and should yield the same solution.</p>
+<p>First, we computed the difference between the solutions: <span class="math inline">\(max∣\hat{x}_{pseudo}−\hat{x}_{lstsq}|≈0, max∣\hat{x}_{pseudo}−\hat{x}_{qr}|≈0\)</span>. Python calculations confirmed that all solutions were nearly identical, up to numerical precision.</p>
+<p>The normal equation is (Boyd, 2018, p.&nbsp;229) <span class="math display">\[A^TA\hat{x} = A^Tb.\]</span></p>
+<p>The residual vector (Boyd, 2018, p.&nbsp;225) <span class="math display">\[r=A\hat{x}−b\]</span> is orthogonal to the column space of A, it means that <span class="math inline">\(A^Tr=0.\)</span></p>
+<p>The maximum absolute difference between the solutions is at most <span class="math inline">\(10^{−16}\)</span> , which is practically zero due to floating-point precision limits. The value of residuals is close to zero confirming that the residuals are orthogonal to the vector <span class="math inline">\(A\mathbf{x}\)</span>.</p>
+<div id="24289f6e" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#All solutions</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>solutions <span class="op">=</span> np.vstack([x_pseudoinv, x_lstsq, x_qr])</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#The maximum absolute difference among solutions</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>differences <span class="op">=</span> np.<span class="bu">max</span>(np.<span class="bu">abs</span>(solutions <span class="op">-</span> solutions[<span class="dv">0</span>]), axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Residuals A*x - b</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>residuals_pseudo <span class="op">=</span> A_matrix <span class="op">@</span> x_pseudoinv <span class="op">-</span> b_vector</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>residuals_lstsq <span class="op">=</span> A_matrix <span class="op">@</span> x_lstsq <span class="op">-</span> b_vector</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>residuals_qr <span class="op">=</span> A_matrix <span class="op">@</span> x_qr <span class="op">-</span> b_vector</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Orthogonality: dot product should be close to zero</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>orthogonality_pseudo <span class="op">=</span> np.dot(A_matrix.T, residuals_pseudo)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>orthogonality_lstsq <span class="op">=</span> np.dot(A_matrix.T, residuals_lstsq)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>orthogonality_qr <span class="op">=</span> np.dot(A_matrix.T, residuals_qr)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co">#Results</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>np.<span class="bu">max</span>(differences), orthogonality_pseudo, orthogonality_lstsq, orthogonality_qr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>(6.106226635438361e-16,
+ array([-7.94850297e-15,  4.62824223e-15,  2.31585584e-15, -1.70696790e-15,
+         2.21524188e-15, -5.86683480e-15,  5.52335955e-15, -3.64118458e-15,
+        -1.78069365e-15,  3.60822483e-16]),
+ array([ 5.65519853e-16, -3.76781939e-15, -2.23779328e-16,  1.99840144e-15,
+        -2.58300326e-15, -2.65065747e-15,  5.26662047e-15,  1.28369537e-16,
+        -2.25080371e-15, -1.63757896e-15]),
+ array([-1.53002611e-15,  1.99840144e-15, -3.29597460e-16, -1.62370117e-15,
+         6.29704622e-16, -2.72351586e-15,  4.92661467e-16, -2.77729229e-15,
+        -1.40165657e-15, -2.09554596e-15]))</code></pre>
+</div>
+</div>
+</section>
+<section id="problem-3-iterative-solutions-to-least-squares" class="level1">
+<h1>Problem 3: Iterative Solutions to Least Squares</h1>
+<pre><code>Although the pseudoinverse provides an exact formula for the least squares solutions, there are some situations in which using the exact solution is computationally difficult, particularly when the matrix $A$  and vector $\mathbf{b}$ have a large number of entries. In this case, $AA^T$, which is an $m\times m$ matrix if $A$ is $m\times n$, may require an enormous amount of memory. In these cases it may be better to use an approximate solution instead of the exact formula. There are many different approximate methods for solving least squares problems,  here we will use an iterative method developed by Richardson.</code></pre>
+<p>This method begins with an initial guess <span class="math inline">\(\mathbf{x}^{(0)} = 0\)</span> and calculates successive approximations as follows:</p>
+<p><span class="math display">\[
+    \mathbf{x}^{(k+1)} = \mathbf{x}^{(k)} - \mu A^T\left(A\mathbf{x}^{(k)}-\mathbf{b}\right)
+\]</span></p>
+<p>Here <span class="math inline">\(\mu\)</span> is a positive parameter that has a similar interpretation to the learning rate for gradient descent. A choice that guarantees convergence is <span class="math inline">\(\mu \leq \frac{1}{\|A\|}\)</span>. The iteration is terminated when the change in the residual <span class="math inline">\(\|A^T(Ax^{(k)} − b)\|\)</span> after successive steps is below a user determined threshold, which indicates that the least squares optimal conditions are nearly satisfied.</p>
+<p>a) Suppose that <span class="math inline">\(\mathbf{x}\)</span> is a solution to the least squares problem:<span class="math display">\[
+\mathbf{x} = A^+\mathbf{b}
+\]</span></p>
+<p>Show by substitution of the formula for the pseudoinverse that <span class="math inline">\(\mathbf{x}\)</span> is a fixed point of the iteration scheme, i.e.&nbsp;that: <span class="math display">\[
+\mathbf{x} = \mathbf{x} - \mu A^T\left(A\mathbf{x}-\mathbf{b}\right)
+\]</span></p>
+<p><strong>Solution:</strong></p>
+<p>From the problem, it is given that Richardson’s iterative method is <span class="math display">\[
+    \mathbf{x}^{(k+1)} = \mathbf{x}^{(k)} - \mu A^T\left(A\mathbf{x}^{(k)}-\mathbf{b}\right).
+\]</span></p>
+<p>We substituted <span class="math inline">\(\mathbf{x}\)</span> with a solution to the least squares problem <span class="math inline">\(\mathbf{x} = A^†\mathbf{b}\)</span>: <span class="math display">\[
+\mathbf{x}^{(k+1)} = A^†\mathbf{b} - \mu A^T\left(AA^†\mathbf{b}-\mathbf{b}\right).
+\]</span></p>
+<p>The solution to the least squares problem <span class="math inline">\(\mathbf{x} = A^†\mathbf{b}\)</span> means that we solve the problem by applying pseudoinverse to <span class="math inline">\(\mathbf{b}\)</span>. Since <span class="math inline">\(\mathbf{b}\)</span> is a linear combination of the columns of <span class="math inline">\(A\)</span> (Boyd, 2018, p.&nbsp;225), and <span class="math inline">\(AA^†\)</span> orthogonal projection matrix onto the column space of <span class="math inline">\(A\)</span>, applying <span class="math inline">\(AA^†\)</span> doesn’t change <span class="math inline">\(\mathbf{b}\)</span>:</p>
+<p><span class="math display">\[AA^†\mathbf{b}=\mathbf{b},\]</span></p>
+<p>We can conclude: <span class="math display">\[AA^†\mathbf{b}-\mathbf{b}=0,\]</span></p>
+<p>The original formula becomes: <span class="math display">\[
+\mathbf{x}^{(k+1)} = A^+\mathbf{b} - \mu A^T·0,
+\]</span> Thus <span class="math display">\[
+\mathbf{x}^{(k+1)} = A^+\mathbf{b}.
+\]</span></p>
+<p>As a result, <span class="math inline">\(\mathbf{x}^{(k+1)} = \mathbf{x}\)</span> the iteration above didn’t change x, meaning that <span class="math inline">\(\mathbf{x} = A^+\mathbf{b}\)</span> is a fixed point of the iteration.</p>
+<p>b) Generate a random 20 × 10 matrix <span class="math inline">\(A\)</span> and 20-vector <span class="math inline">\(\mathbf{b}\)</span>, and compute the least squares solution <span class="math inline">\(\mathbf{x} = A^+\mathbf{b}\)</span>. Then run the Richardson algorithm with <span class="math inline">\(\mu = \frac{1}{\|A\|^2}\)</span> for 500 iterations, and plot <span class="math inline">\(\|\mathbf{x}^{(k)}-\mathbf{x}\|\)</span> to verify that <span class="math inline">\(\mathbf{x}^{(k)}\)</span> is converging to <span class="math inline">\(\mathbf{x}\)</span></p>
+<p><strong>Solution:</strong></p>
+<p>We used numerical experiment to confirm the above conclusions.</p>
+<p>First, we generated a random 20 × 10 matrix <span class="math inline">\(A\)</span> and 20-vector <span class="math inline">\(\mathbf{b}\)</span>, calculated the pseudoinverse <span class="math inline">\(A^+\)</span> using np.linalg.pinv() and found the least squares solution <span class="math inline">\(\mathbf{x}\)</span> by applying the pseudoinverse to b.</p>
+<p>Next, we used Richardson Iteration for 500 iterations with an initial guess <span class="math inline">\(\mathbf{x}^{(0)} = 0\)</span>, choosing <span class="math inline">\(\mu \leq \frac{1}{\|A\|^2}\)</span>, always works (Boyd, 2018, p.&nbsp;241) to ensure convergence. Also, the list to store errors norm <span class="math inline">\(\mathbf{x}^{(k)}\)</span> was created before running for loop for Richardson Iteration.</p>
+<p>Once Richardson Iteration was done, we plotted error <span class="math inline">\(\|\mathbf{x}^{(k)}-\mathbf{x}\|\)</span> over the number of iteration steps. The plot confirmed that the error norm decreases with the increasing number of iterations, the Richardson Iteration’s solution approaches the mathematical solution of the least squares (<span class="math inline">\(\mathbf{x}^{(k)}\)</span> is converging to <span class="math inline">\(\mathbf{x}\)</span>).</p>
+<div id="4c4d3709" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Set seed</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Generate random matrix</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>A_matrix <span class="op">=</span> np.random.randn(<span class="dv">20</span>, <span class="dv">10</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Generate random vector</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>b_vector <span class="op">=</span> np.random.randn(<span class="dv">20</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>A_matrix, b_vector</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Pseudoinvers for solution</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>A_pseudoinv <span class="op">=</span> np.linalg.pinv(A_matrix)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>x_pseudoinv <span class="op">=</span> A_pseudoinv <span class="op">@</span> b_vector</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Initial guess x0=0</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co">#For mu step size 1 / ||A||^2</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>x_k <span class="op">=</span> np.zeros(<span class="dv">10</span>)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>mu <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> np.linalg.norm(A_matrix, <span class="bu">ord</span><span class="op">=</span><span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="co">#Number of iterations</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>iterations <span class="op">=</span> <span class="dv">500</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> []</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="co">#Richardson Iteration</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(iterations):</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    x_k_1 <span class="op">=</span> x_k <span class="op">-</span> mu <span class="op">*</span> A_matrix.T <span class="op">@</span> (A_matrix <span class="op">@</span> x_k <span class="op">-</span> b_vector)</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>    errors.append(np.linalg.norm(x_k_1 <span class="op">-</span> x_pseudoinv))</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>    x_k <span class="op">=</span> x_k_1</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot convergence</span></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>plt.plot(errors)</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Iteration steps'</span>)</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Error, $\|\mathbf</span><span class="sc">{x}</span><span class="st">^{(k)}-\mathbf</span><span class="sc">{x}</span><span class="st">\|$'</span>)</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Convergence of Richardson Iteration, '</span>)</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>&lt;&gt;:33: SyntaxWarning: invalid escape sequence '\|'
+&lt;&gt;:33: SyntaxWarning: invalid escape sequence '\|'
+C:\Users\daria\AppData\Local\Temp\ipykernel_7176\3268359926.py:33: SyntaxWarning: invalid escape sequence '\|'
+  plt.ylabel('Error, $\|\mathbf{x}^{(k)}-\mathbf{x}\|$')
+C:\Users\daria\AppData\Local\Temp\ipykernel_7176\3268359926.py:35: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  plt.legend()</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_Optimization_%20Least_Squares_files/figure-html/cell-11-output-2.png" width="669" height="523" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="reference" class="level1">
+<h1>Reference</h1>
+<ol type="1">
+<li><p>Kolter, Z. (2008). <em>Linear algebra review and reference</em>. Updated by Chuong Do. Retrieved from <a href="https://www.cs.cmu.edu/~zkolter/course/linalg/linalg_notes.pdf" class="uri">https://www.cs.cmu.edu/~zkolter/course/linalg/linalg_notes.pdf</a></p></li>
+<li><p>Boyd, S. (2018). <em>Introduction to applied linear algebra: Vectors, matrices, and least squares</em>. Cambridge University Press. <a href="https://web.stanford.edu/~boyd/vmls/vmls.pdf" class="uri">https://web.stanford.edu/~boyd/vmls/vmls.pdf</a></p></li>
+<li><p>Boyd, S., &amp; Vandenberghe, L. (2004). <em>Convex optimization</em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511804441" class="uri">https://doi.org/10.1017/CBO9780511804441</a></p></li>
+<li><p>Induraj, A. (2020). Implementing gradient descent in Python . Medium. Retrieved from <a href="https://induraj2020.medium.com/implementing-gradient-descent-in-python-d1c6aeb9a448" class="uri">https://induraj2020.medium.com/implementing-gradient-descent-in-python-d1c6aeb9a448</a></p></li>
+</ol>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
