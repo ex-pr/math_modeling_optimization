@@ -71,16 +71,12 @@ Tip: Be very cautious when coding about the dimensionality of matrices and array
 **Step 1.** First, for each time t, we are going to create a feature vector $\mathbf{a}_t$ (8 rows, 1 column, each row has info about past 7 days of trips and temperature for day t), a target vector $b_t$ (the number of trips on day t) and coefficient vector $\mathbf{x}_t$ (8 rows, 1 column, each row has a coefficient at time t). The data matrix $A_t$ is a tx8 matrix (since $\mathbf{a}_t$ has 8 features), we should remember that the number of time observations is greater than the number of features/data points in each observation in order to fit a linear model. We start at day 8 as the previous 7 days are used to form $\mathbf{a}_8$. In Python, we load the dataset and create lag features for the past 7 days:
 
 $$
-\mathbf{a}_t = [N_{trips, t-1}, N_{trips, t-2}, \cdots\ , N_{trips, t-7}, T_t]^T, \\$$
-$$b_t=N_{trips,t},$$
-$$\mathbf{x}_t = [C_{1,t}, C_{2,t},  \cdots,  C_{7,t},  C_{T,t}]^T, $$
-$$A_{(t)} = \begin{bmatrix} 
+\mathbf{a}_t = [N_{trips, t-1}, N_{trips, t-2}, \cdots\ , N_{trips, t-7}, T_t]^T, \\$$ $$b_t=N_{trips,t},$$ $$\mathbf{x}_t = [C_{1,t}, C_{2,t},  \cdots,  C_{7,t},  C_{T,t}]^T, $$ $$A_{(t)} = \begin{bmatrix} 
 \cdots\, \mathbf{a}_8^T\, \cdots \\
 \cdots\, \mathbf{a}_9^T\, \cdots \\ 
 \vdots \\ 
 \cdots\, \mathbf{a}_t^T\, \cdots 
-\end{bmatrix},\quad $$
-$$\mathbf{b}_{(t)} = \begin{bmatrix} 
+\end{bmatrix},\quad $$ $$\mathbf{b}_{(t)} = \begin{bmatrix} 
 N_{trips, 8} \\ N_{trips, 9} \\ 
 \vdots \\ 
 N_{trips, t} 
@@ -96,9 +92,7 @@ $$
 
 **Step 3.** We apply reccursive updated to the Gram matrix $G_t$ and vector $h_t$ and solve the updated system:
 
-$$ G_{(t+1)} = G_{(t)} + \mathbf{a}_{t+1}\mathbf{a}^T_{t+1},\quad $$
-$$\mathbf{h}_{(t+1)} = \mathbf{h}_{(t)} + b_{t+1}\mathbf{a}_{t+1}, $$
-$$G_{(t+1)}\mathbf{x}_{(t+1)} = \mathbf{h}_{(t+1)}.$$
+$$ G_{(t+1)} = G_{(t)} + \mathbf{a}_{t+1}\mathbf{a}^T_{t+1},\quad $$ $$\mathbf{h}_{(t+1)} = \mathbf{h}_{(t)} + b_{t+1}\mathbf{a}_{t+1}, $$ $$G_{(t+1)}\mathbf{x}_{(t+1)} = \mathbf{h}_{(t+1)}.$$
 
 In Python, we update for each new data point $G_{(t+1)}, \mathbf{h}_{(t+1)}$, and solve for updated coefficients $\mathbf{x}_{(t+1)}$. After, we store coefficients and compute $R^2$ to track model performance.
 
@@ -333,9 +327,7 @@ The variance of a binomial random variable is $$Var(X) = kNp(1 - p)$$.
 
 Since social mobility is measured as a proportion:
 
-$$p = \frac{X}{kN}, $$
-$$Var(p) = Var(\frac{X}{k N}) = \frac{1}{(kN)^2} \cdot \text{Var}(\text{X}), $$
-$$Var(p) = \frac{1}{(k \cdot N)^2} \cdot (k \cdot N \cdot p \cdot (1 - p)) = \frac{p \cdot (1 - p)}{k \cdot N}.$$
+$$p = \frac{X}{kN}, $$ $$Var(p) = Var(\frac{X}{k N}) = \frac{1}{(kN)^2} \cdot \text{Var}(\text{X}), $$ $$Var(p) = \frac{1}{(k \cdot N)^2} \cdot (k \cdot N \cdot p \cdot (1 - p)) = \frac{p \cdot (1 - p)}{k \cdot N}.$$
 
 The variance of social mobility is proportional to the following expression, as k is an unknown constant: $$\text{Variance} \propto \frac{\text{Mobility} \cdot (1 - \text{Mobility})}{\text{Population}}.$$
 
