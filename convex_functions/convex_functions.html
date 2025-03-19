@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Daria Dubovskaia">
+
+<title>Homework 4: Convex Functions</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="convex_functions_files/libs/clipboard/clipboard.min.js"></script>
+<script src="convex_functions_files/libs/quarto-html/quarto.js"></script>
+<script src="convex_functions_files/libs/quarto-html/popper.min.js"></script>
+<script src="convex_functions_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="convex_functions_files/libs/quarto-html/anchor.min.js"></script>
+<link href="convex_functions_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="convex_functions_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="convex_functions_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="convex_functions_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="convex_functions_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Homework 4: Convex Functions</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Daria Dubovskaia </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="problem-1-exercise-3.2" class="level2">
+<h2 class="anchored" data-anchor-id="problem-1-exercise-3.2">Problem 1: Exercise 3.2</h2>
+<p>Level sets of convex, concave, quasiconvex, and quasiconcave functions. Some level sets of a function <span class="math inline">\(f\)</span> are shown below. The curve labeled 1 shows <span class="math inline">\(\{x | f(x) = 1\}\)</span>, etc.</p>
+<p><img src="images/Screenshot%202025-03-18%20225234.png" class="img-fluid"></p>
+<p>Could <span class="math inline">\(f\)</span> be convex (concave, quasiconvex, quasiconcave)? Explain your answer. Repeat for the level curves shown below.</p>
+<p><img src="images/Screenshot%202025-03-18%20225252.png" class="img-fluid"></p>
+<p><strong>Solution:</strong></p>
+<ul>
+<li><p>For the first picture, <span class="math inline">\(\{x | f(x) \leq 1\}\)</span> is the innermost oval, <span class="math inline">\(\{x | f(x) \leq 2\}\)</span> is the next oval, etc. These nested ovals can be convex regions. That suggests that all sublevel sets might be convex, which would make this function quasiconvex. Also, Figure 3.12, Boyd &amp; Vandenberghe, 2004, p.100 shows three level curves of a quasiconvex function similar to the first picture. But if we draw a line across all three ovals, we can see that this function can first decrease and then increase which violates convexity along this line, so this function is not globally convex. For this function to be concave, the superlevel sets <span class="math inline">\(\{x \ | \ f(x) \geq \alpha \}\)</span> have to be convex, but the outer part of each oval <span class="math inline">\(\{x | f(x) \geq 1\}\)</span>, etc, forms hollow oval region, which is not convex. This function could be <strong>quasiconvex</strong>, but <strong>not convex</strong>, and <strong>not concave or quasiconcave</strong>.</p></li>
+<li><p>The sublevel set <span class="math inline">\(\{x | f(x) \leq 6\}\)</span> could contain the regions inside curves 1-5 plus a separate region around curve 6. So we are having two separated blobs, the sublevel set is a union of disjoint sets, which is not convex (unless one set is contained entirely in the other). Since not all sublevel sets are convex, this figure <strong>is not a convex or quasiconvex</strong>. But superlevel sets <span class="math inline">\(\{x | f(x) \geq \alpha \}\)</span> could form large connected regions that peel off piece by piece, possibly remaining convex at each stage. So this function <strong>could be concave, and therefore also quasiconcave.</strong></p></li>
+</ul>
+</section>
+<section id="problem-2-exercise-3.6" class="level2">
+<h2 class="anchored" data-anchor-id="problem-2-exercise-3.6">Problem 2: Exercise 3.6</h2>
+<p>Functions and epigraphs. When is the epigraph of a function a halfspace? When is the epigraph of a function a convex cone? When is the epigraph of a function a polyhedron?</p>
+<p><strong>Solution:</strong></p>
+<p>The epigraph of a function <span class="math inline">\(f: \ \mathbf{R}^n   \rightarrow \mathbf{R}\)</span> is defined as <span class="math inline">\(\textbf{epi} \ f = \{(x,t) \ | \ x \in \textbf{dom} \ f, f(x) \leq t \}\)</span> (Boyd &amp; Vandenberghe, 2004, p.75).</p>
+<ul>
+<li><p>The epigraph of a function is a halfspace if and only if <span class="math inline">\(f\)</span> is an affine function. All affine (and therefore also linear) functions are both convex and concave. Conversely, any function that is convex and concave is affine.(Boyd &amp; Vandenberghe, 2004, p.67). For the affine function <span class="math inline">\(f(x)=a^Tx + b\)</span>, where <span class="math inline">\(a \in \mathbf{R}^n, b \in \mathbf{R}\)</span>, the epigraph is <span class="math inline">\(\textbf{epi} \ f = \{(x,t) \ | a^Tx + b \leq t \}\)</span> which is a halfspace in <span class="math inline">\(\mathbf{R}^{n+1}\)</span> (Boyd &amp; Vandenberghe, 2004, 3.1.7 Epigraph, p.75).</p></li>
+<li><p>The epigraph of a function is a convex cone if and only if <span class="math inline">\(f\)</span> is convex and positively homogeneous, meaning that for the function <span class="math inline">\(f( \alpha x) = \alpha f(x), \forall \alpha \geq 0\)</span>, the epigraph is <span class="math inline">\((x,t) \in \textbf{epi} \ f \Rightarrow (\alpha x, \alpha t) \in \textbf{epi} \ f, \forall \alpha \geq 0\)</span>. That is, if we take any point in the epigraph and scale it by a positive factor, the scaled point must still be in the epigraph, meaning it is closed under positive scaling. Since a convex cone is a set that is closed under positive scaling, the epigraph of a positively homogeneous convex function is always a convex cone (Boyd &amp; Vandenberghe, 2004, Example 3.3, p.75).</p></li>
+<li><p>The epigraph of a function is a polyhedron (intersection of multiple halfspaces) if and only if <span class="math inline">\(f\)</span> is piecewise-affine function: <span class="math inline">\(f(x) = \textbf{max} \{a_1^Tx + b_1, \ldots , a_L^Tx + b_L \}\)</span>, the epigraph is <span class="math inline">\(\textbf{epi} \ f = \{(x,t) \ | \ a_i^Tx + b_i \leq t, \ i = 1, \ldots, L \}\)</span>. Since each constraint <span class="math inline">\(\ a_i^Tx + b_i \leq t\)</span> defines a halfspace, and a polyhedron is an intersection of multiple halfspaces, it follows that the epigraph of a piecewise-affine function is a polyhedron.(Boyd &amp; Vandenberghe, 2004, Example 3.5, p.80).</p></li>
+</ul>
+</section>
+<section id="problem-3-exercise-3.16" class="level2">
+<h2 class="anchored" data-anchor-id="problem-3-exercise-3.16">Problem 3: Exercise 3.16</h2>
+<p>For each of the following functions determine whether it is convex, concave, quasiconvex, or quasiconcave.</p>
+<ol type="a">
+<li><p><span class="math inline">\(f(x) = e^x − 1\)</span> on <span class="math inline">\(\mathbf{R}\)</span>.</p></li>
+<li><p><span class="math inline">\(f(x_1, x_2) = x_1 x_2\)</span> on <span class="math inline">\(\mathbf{R^2_{++}}\)</span></p></li>
+<li><p><span class="math inline">\(f(x_1, x_2) = 1/(x_1 x_2)\)</span> on <span class="math inline">\(\mathbf{R^2_{++}}\)</span></p></li>
+<li><p><span class="math inline">\(f(x_1, x_2) = x_1/x_2\)</span> on <span class="math inline">\(\mathbf{R^2_{++}}\)</span></p></li>
+<li><p><span class="math inline">\(f(x_1, x_2) = x^2_1/x_2\)</span> on <span class="math inline">\(\mathbf{R} \times \mathbf{R_{++}}\)</span></p></li>
+<li><p><span class="math inline">\(f(x_1, x_2) = x^\alpha_1 x^{1−α}_2\)</span>, where <span class="math inline">\(0 \leq \alpha \leq 1\)</span>, on <span class="math inline">\(\mathbf{R^2_{++}}\)</span></p></li>
+</ol>
+<p><strong>Solution:</strong></p>
+<ol type="a">
+<li><span class="math inline">\(f(x) = e^x − 1\)</span> on <span class="math inline">\(\mathbf{R}\)</span>.</li>
+</ol>
+<ul>
+<li><p>Convexity, Concavity: the second derivative is <span class="math inline">\(f^{''}(x) = e^x\)</span>. The function <strong>is strictly convex</strong>, since <span class="math inline">\(e^x &gt; 0, \forall x \in \mathbf{R}\)</span> (Boyd &amp; Vandenberghe, 2004, 3.1.4 Second-order conditions, p.101). Since <span class="math inline">\(f^{''}(x) &gt; 0\)</span>, this function <strong>is not concave</strong>.</p></li>
+<li><p>Quasiconvexity, Quasiconcavity: since this exponential function is strictly convex, it <strong>is quasiconvex</strong>. Also, this function is increasing, and monotonic functions are both quasiconvex and <strong>quasiconcave</strong> (Boyd &amp; Vandenberghe, 2004, 3.4 Quasiconvex functions, p.95).</p></li>
+</ul>
+<ol start="2" type="a">
+<li><span class="math inline">\(f(x_1, x_2) = x_1 x_2\)</span> on <span class="math inline">\(\mathbf{R^2_{++}}\)</span>.</li>
+</ol>
+<ul>
+<li><p>Convexity, Concavity: convexity requires the Hessian to be positive semidefinite (Boyd &amp; Vandenberghe, 2004, p.&nbsp;71). The Hessian is indefinite (one positive and one negative eigenvalue), so the function <strong>is neither convex nor concave</strong>. <span class="math display">\[
+H =
+\begin{bmatrix}
+0 &amp; 1 \\
+1 &amp; 0 \\
+\end{bmatrix}.
+\]</span></p></li>
+<li><p>Quasiconvexity, Quasiconcavity: the function <strong>is not quasiconvex</strong> because its sublevel sets are not convex <span class="math inline">\(\{(x_1,x_2) \ | \ x_1x_2 \leq \alpha \}\)</span>. It <strong>is quasiconcave</strong> because the superlevel sets are convex sets <span class="math inline">\(\{(x_1,x_2) \ | \ x_1x_2 \geq \alpha \}\)</span> for <span class="math inline">\(\alpha&gt;0\)</span> (Boyd &amp; Vandenberghe, 2004, Example 3.31, p.96). Or we can take logarithms <span class="math inline">\(\log \ f(x_1,x_2) = \log(x_1) + \log(x_2)\)</span>, <span class="math inline">\(\log\)</span> is concave, we get a concave function, log-concavity implies quasiconcavity (Boyd &amp; Vandenberghe, 2004, 3.5 Log-concave and log-convex functions, p.104).</p></li>
+</ul>
+<ol start="3" type="a">
+<li><span class="math inline">\(f(x_1, x_2) = 1/(x_1 x_2)\)</span> on <span class="math inline">\(\mathbf{R^2_{++}}\)</span></li>
+</ol>
+<ul>
+<li>Convexity, Concavity: the Hessian is positive definite, thus, function <strong>is strictly convex</strong> (Boyd &amp; Vandenberghe, 2004, 3.1.4 Second-order conditions, p.101). It is <strong>not concave</strong> as Hessian is not negative semidefinite.</li>
+</ul>
+<p><span class="math display">\[
+H =
+\begin{bmatrix}
+\frac{2}{x_1^3x_2} &amp; \frac{1}{x_1^2x_2^2} \\
+\frac{1}{x_1^2x_2^2} &amp; \frac{2}{x_1x_2^3} \\
+\end{bmatrix}, \\
+\text{determinant} = \frac{3}{x_1^4x_2^4} &gt;0.
+\]</span></p>
+<ul>
+<li>Quasiconvexity, Quasiconcavity: since this function is strictly convex, it <strong>is quasiconvex</strong>. Superlevel sets <span class="math inline">\(\{x \in \text{dom} \ f \ | \ \frac{1}{x_1x_2} \geq \alpha \}\)</span>, or <span class="math inline">\(\{x_1x_2 \leq \frac{1}{\alpha} \}\)</span>, are sublevel sets from part (b). As a result, this function is <strong>not quasiconcave.</strong></li>
+</ul>
+<ol start="4" type="a">
+<li><span class="math inline">\(f(x_1, x_2) = x_1/x_2\)</span> on <span class="math inline">\(\mathbf{R^2_{++}}\)</span>.</li>
+</ol>
+<ul>
+<li>Convexity, Concavity: the Hessian isis indefinite, thus, function <strong>is neither convex nor concave</strong>.</li>
+</ul>
+<p><span class="math display">\[
+H =
+\begin{bmatrix}
+0 &amp; -\frac{1}{x_2^2} \\
+-\frac{1}{x_2^2} &amp; \frac{2x_1}{x_2^3} \\
+\end{bmatrix}, \\
+\text{determinant} = -\frac{1}{x_2^4} &lt; 0.
+\]</span></p>
+<ul>
+<li>Quasiconvexity, Quasiconcavity: sublevel sets are <span class="math inline">\(\{x_1 \leq \alpha x_2\}\)</span> which is halfspace (also restricted by <span class="math inline">\(\mathbf{R^2_{++}}\)</span>, convex). The function <strong>is quasiconvex</strong>. Superlevel sets are<span class="math inline">\(\{x_1 \geq \alpha x_2\}\)</span> which is halfspace (convex). The function <strong>is quasiconcave</strong>.</li>
+</ul>
+<ol start="5" type="a">
+<li><span class="math inline">\(f(x_1, x_2) = x^2_1/x_2\)</span> on <span class="math inline">\(\mathbf{R} \times \mathbf{R_{++}}\)</span></li>
+</ol>
+<ul>
+<li>Convexity, Concavity: the Hessian is positive semidefinite, thus, function <strong>is convex</strong>, but <strong>not concave</strong>, as Hessian not negative definite. (Boyd &amp; Vandenberghe, 2004, Figure 3.3, p.72).</li>
+</ul>
+<p><span class="math display">\[
+H =
+\begin{bmatrix}
+\frac{2}{x_2} &amp; -\frac{2 x_1}{x_2^2} \\
+-\frac{2 x_1}{x_2^2} &amp; \frac{2x_1^2}{x_2^3} \\
+\end{bmatrix}, \\
+\text{determinant} = 0.
+\]</span></p>
+<ul>
+<li>Quasiconvexity, Quasiconcavity: The function <strong>is quasiconvex</strong> as its sublevels are convex. Based on the Figure 3.3, the function <strong>is not quasiconcave</strong>.</li>
+</ul>
+<ol start="6" type="a">
+<li><span class="math inline">\(f(x_1, x_2) = x^\alpha_1 x^{1−α}_2\)</span>, where <span class="math inline">\(0 \leq \alpha \leq 1\)</span>, on <span class="math inline">\(\mathbf{R^2_{++}}\)</span></li>
+</ol>
+<ul>
+<li>Convexity, Concavity: this is the standard geometric mean-type function (for <span class="math inline">\(\alpha \in (0,1)\)</span>) (Boyd &amp; Vandenberghe, 2004, 3.1 Basic properties and examples, p.74) which is <strong>concave</strong> on <span class="math inline">\(\mathbf{R^2_{++}}\)</span>. Hessian is negative semidefinite, determinant zero. The function <strong>is not convex</strong>.</li>
+</ul>
+<p><span class="math display">\[
+H =
+\begin{bmatrix}
+(\alpha-1)\alpha x_1^{\alpha-2} x_2^{1-\alpha} &amp; (1-\alpha) \alpha x_1^{\alpha-1} x_2^{-\alpha} \\
+(1-\alpha) \alpha x_1^{\alpha-1} x_2^{-\alpha} &amp; -((1-\alpha)\alpha x_1^\alpha x_2^{-\alpha-1}) \\
+\end{bmatrix}, \\
+\text{determinant} = 0.
+\]</span></p>
+<ul>
+<li>Quasiconvexity, Quasiconcavity: sublevel sets <span class="math inline">\(\{x_1,x_2 \ | \  x^\alpha_1 x^{1−α}_2 \leq k \}\)</span> are not convex. If we take two points witht the same geometric mean (<span class="math inline">\((1,k^2),(k^2,1)\)</span>), and they both are <span class="math inline">\(\leq k\)</span>, their midpoints has geometric mean <span class="math inline">\(&gt;k\)</span>. So <strong>not quasiconvex</strong>. Since this function is concave, so <strong>quasiconcave</strong> (since all of its superlevel sets <span class="math inline">\(\{x_1,x_2 \ | \  x^\alpha_1 x^{1−α}_2 \geq k \}\)</span> are convex).</li>
+</ul>
+<p><strong>Conclusion:</strong></p>
+<ol type="a">
+<li><p>Convex, not concave, quasiconvex, quasiconcave.</p></li>
+<li><p>Not convex, not concave, not quasiconvex, quasiconcave.</p></li>
+<li><p>Convex, not concave, quasiconvex, not quasiconcave.</p></li>
+<li><p>Not convex, not concave, quasiconvex, quasiconcave.</p></li>
+<li><p>Convex, not concave, quasiconvex, not quasiconcave.</p></li>
+<li><p>Not convex, concave, not quasiconvex, quasiconcave.</p></li>
+</ol>
+</section>
+<section id="problem-4-exercise-3.22" class="level2">
+<h2 class="anchored" data-anchor-id="problem-4-exercise-3.22">Problem 4: Exercise 3.22</h2>
+<p>Composition rules. Show that the following functions are convex.</p>
+<ol type="a">
+<li><p><span class="math inline">\(f(x) = -\log\left(-\log\sum_{i=1}^m e{a_iT x + b_i}\right)\)</span> on <span class="math inline">\(\text{dom} \, f = \left\{ x \mid \sum_{i=1}^m e^{a_i^T x + b_i} &lt; 1 \right\}\)</span>. You can use the fact that <span class="math inline">\(\log\left(\sum_{i=1}^n e^{y_i}\right)\)</span> is convex.</p></li>
+<li><p><span class="math inline">\(f(x, u, v) = -\sqrt{u v - x^T x}\)</span> on <span class="math inline">\(\text{dom} \, f = \left\{ (x, u, v) \mid u v &gt; x^T x, \, u, v &gt; 0 \right\}\)</span>. Use the fact that <span class="math inline">\(x^T x / u\)</span> is convex in <span class="math inline">\((x, u)\)</span> for <span class="math inline">\(u &gt; 0\)</span>, and that <span class="math inline">\(-\sqrt{x_1 x_2}\)</span> is convex on <span class="math inline">\(\mathbf{R^2_{++}}\)</span>.</p></li>
+<li><p><span class="math inline">\(f(x, u, v) = -\log(u v - x^T x)\)</span> on <span class="math inline">\(\text{dom} \, f = \left\{ (x, u, v) \mid u v &gt; x^T x, \, u, v &gt; 0 \right\}\)</span>.</p></li>
+<li><p><span class="math inline">\(f(x, t) = - (t^p - \|x\|_p^p)^{1/p}\)</span> where <span class="math inline">\(p &gt; 1\)</span> and <span class="math inline">\(\text{dom} \, f = \left\{ (x, t) \mid t \geq \|x\|_p \right\}\)</span>. You can use the fact that <span class="math inline">\(\|x\|_p^p / u^{p-1}\)</span> is convex in <span class="math inline">\((x, u)\)</span> for <span class="math inline">\(u &gt; 0\)</span> (see exercise 3.23), and that <span class="math inline">\(-x^{1/p} y^{1-1/p}\)</span> is convex on <span class="math inline">\(\mathbf{R^2_{+}}\)</span>. (see exercise 3.16).</p></li>
+<li><p><span class="math inline">\(f(x, t) = -\log(t^p - \|x\|_p^p)\)</span> where <span class="math inline">\(p &gt; 1\)</span> and <span class="math inline">\(\text{dom} \, f = \left\{ (x, t) \mid t &gt; \|x\|_p \right\}\)</span>. You can use the fact that <span class="math inline">\(\|x\|_p^p / u^{p-1}\)</span> is convex in <span class="math inline">\((x, u)\)</span> for <span class="math inline">\(u &gt; 0\)</span> (see exercise 3.23).</p></li>
+</ol>
+<p><strong>Solution:</strong></p>
+<ol type="a">
+<li><span class="math inline">\(f(x) = -\log\left(-\log\sum_{i=1}^m e{a_iT x + b_i}\right)\)</span> on <span class="math inline">\(\text{dom} \, f = \left\{ x \mid \sum_{i=1}^m e^{a_i^T x + b_i} &lt; 1 \right\}\)</span>. You can use the fact that <span class="math inline">\(\log\left(\sum_{i=1}^n e^{y_i}\right)\)</span> is convex.</li>
+</ol>
+<ul>
+<li><p>each term <span class="math inline">\(e^{a_i^T x + b_i}\)</span> is convex as exponential function (from its positive second derivative), <span class="math inline">\(y_i = a_i^T x + b_i\)</span> is affine, the sum of convex functions is convex <span class="math inline">\(g(y)=\sum_{i=1}^m e^{y_i}\)</span>. Given that <span class="math inline">\(\log(g(y)) = \log\left(\sum_{i=1}^n e^{y_i}\right)\)</span> is convex. A composition with an affine function preserves convexity, so: <span class="math inline">\(\log(g(x)) = \log\sum_{i=1}^m e^{ a_i^T x + b_i}\)</span> is <strong>convex</strong>.</p></li>
+<li><p>Since the domain is <span class="math inline">\(\text{dom} \, f = \left\{ x \mid \sum_{i=1}^m e^{a_i^T x + b_i} &lt; 1 \right\}, \log\sum_{i=1}^m e^{ a_i^T x + b_i} &lt; 0, -\log\sum_{i=1}^m e^{ a_i^T x + b_i} &gt; 0\)</span>. For a shorter notation, <span class="math inline">\(h(x) = \log\sum_{i=1}^m e^{ a_i^T x + b_i}, h(x) &lt; 0, - h(x) &gt; 0\)</span>. As a result, in <span class="math inline">\(-\log(-h(x))\)</span>, we have <span class="math inline">\(h(x)\)</span> convex, <span class="math inline">\(-h(x)\)</span> is concave, <span class="math inline">\(\log(-h(x))\)</span> is concave (log is concave and increasing, applied to a concave function, Boyd &amp; Vandenberghe, 2004, 3.5 Log-concave and log-convex functions, p.104), <span class="math inline">\(-\log(-h(x))\)</span> is convex (negative of a concave function).</p></li>
+<li><p><span class="math inline">\(f(x) = -\log\left(-\log\sum_{i=1}^m e^{a_i^T x + b_i}\right)\)</span> <strong>is convex.</strong></p></li>
+</ul>
+<ol start="2" type="a">
+<li><span class="math inline">\(f(x, u, v) = -\sqrt{u v - x^T x}\)</span> on <span class="math inline">\(\text{dom} \, f = \left\{ (x, u, v) \mid u v &gt; x^T x, \, u, v &gt; 0 \right\}\)</span>. Use the fact that <span class="math inline">\(x^T x / u\)</span> is convex in <span class="math inline">\((x, u)\)</span> for <span class="math inline">\(u &gt; 0\)</span>, and that <span class="math inline">\(-\sqrt{x_1 x_2}\)</span> is convex on <span class="math inline">\(\mathbf{R^2_{++}}\)</span>.</li>
+</ol>
+<ul>
+<li><p>We can rewrite the function as <span class="math inline">\(f(x, u, v) = -\sqrt{u(v - \frac{x^T x}{u})}\)</span>. <span class="math inline">\(\frac{x^T x}{u}\)</span> is convex (given in the problem statement), <span class="math inline">\(v - \frac{x^T x}{u}\)</span> is concave in <span class="math inline">\(x,u,v\)</span> (as linear <span class="math inline">\(v\)</span> minus convex). This concave component is multiplied by a positive <span class="math inline">\(u\)</span> is also concave. So <span class="math inline">\(u v - x^T x\)</span> is concave.</p></li>
+<li><p>The outer square root <span class="math inline">\(-\sqrt{t}\)</span> is convex (as opposite to a power concave function) and strictly decreasing on <span class="math inline">\(t&gt;0\)</span> (Power functions <span class="math inline">\(x^a\)</span> are concave for <span class="math inline">\(0\leq a \leq 1\)</span>, Boyd &amp; Vandenberghe, 2004, 3.1.5 Examples, p.71)</p></li>
+<li><p>We have a composition of concave expression with convex expression which is decreasing, we get <strong>convex</strong> (Boyd &amp; Vandenberghe, 2004, (3.10) Scalar composition, p.84).</p></li>
+</ul>
+<ol start="3" type="a">
+<li><span class="math inline">\(f(x, u, v) = -\log(u v - x^T x)\)</span> on <span class="math inline">\(\text{dom} \, f = \left\{ (x, u, v) \mid u v &gt; x^T x, \, u, v &gt; 0 \right\}\)</span>.</li>
+</ol>
+<ul>
+<li><p>As in part (b) <span class="math inline">\(u v - x^T x\)</span> is concave. With the concave component <span class="math inline">\(y = u v - x^T x &gt; 0\)</span>, we have <span class="math inline">\(f(y) = -\log(y), y &gt; 0\)</span>, this function is strictly decreasing and is convex (<span class="math inline">\(\log(x)\)</span> is concave on <span class="math inline">\(\mathbf{R^2_{++}}\)</span>, the opposite function is convex, Boyd &amp; Vandenberghe, 2004, 3.1.5 Examples, p.71). The result of the convex, decreasing fucntion with concave component give us a convex function (Boyd &amp; Vandenberghe, 2004, Scalar composition, p.84).</p></li>
+<li><p><span class="math inline">\(f(x, u, v) = -\log(u v - x^T x)\)</span> <strong>is convex.</strong></p></li>
+</ul>
+<ol start="4" type="a">
+<li><span class="math inline">\(f(x, t) = - (t^p - \|x\|_p^p)^{1/p}\)</span> where <span class="math inline">\(p &gt; 1\)</span> and <span class="math inline">\(\text{dom} \, f = \left\{ (x, t) \mid t \geq \|x\|_p \right\}\)</span>. You can use the fact that <span class="math inline">\(\|x\|_p^p / u^{p-1}\)</span> is convex in <span class="math inline">\((x, u)\)</span> for <span class="math inline">\(u &gt; 0\)</span> (see exercise 3.23), and that <span class="math inline">\(-x^{1/p} y^{1-1/p}\)</span> is convex on <span class="math inline">\(\mathbf{R^2_{+}}\)</span>. (see exercise 3.16).</li>
+</ol>
+<ul>
+<li><p>Inner function <span class="math inline">\(g(x,t) = t^p - \|x\|_p^p\)</span>is concave on <span class="math inline">\(\text{dom} \, f = \left\{ (x, t) \mid t \geq \|x\|_p \right\}\)</span>. Since <span class="math inline">\(\|x\|_p^p / t^{p-1}\)</span> is convex in <span class="math inline">\((x, t)\)</span> for <span class="math inline">\(t &gt; 0\)</span>, we can rewrite <span class="math inline">\(t^p - \|x\|_p^p = t^p(1-\|x\|_p^p / t^{p})\)</span>. <span class="math inline">\(\|x\|_p^p / t^{p}\)</span> also exhibits the correct (convex) curvature property, the opposite to it <span class="math inline">\(-\|x\|_p^p / t^{p}\)</span> is concave. Multiplying a concave function <span class="math inline">\(1-\|x\|_p^p / t^{p}\)</span> and by a positive scalar <span class="math inline">\(t^p\)</span> on the domain <span class="math inline">\(t \geq \|x\|_p\)</span> preserves concavity.</p></li>
+<li><p>Outer power function <span class="math inline">\(-k^{1/p}\)</span> is convex (as opposite to a power concave function, power functions <span class="math inline">\(x^a\)</span> are concave for <span class="math inline">\(0\leq a \leq 1\)</span>, Boyd &amp; Vandenberghe, 2004, 3.1.5 Examples, p.71), it is also strictly decreasing for <span class="math inline">\(k&gt;0\)</span>.</p></li>
+<li><p>The composition of strictly decreasing convex function with a concave function <strong>is convex</strong>.</p></li>
+</ul>
+<ol start="5" type="a">
+<li><span class="math inline">\(f(x, t) = -\log(t^p - \|x\|_p^p)\)</span> where <span class="math inline">\(p &gt; 1\)</span> and <span class="math inline">\(\text{dom} \, f = \left\{ (x, t) \mid t &gt; \|x\|_p \right\}\)</span>. You can use the fact that <span class="math inline">\(\|x\|_p^p / u^{p-1}\)</span> is convex in <span class="math inline">\((x, u)\)</span> for <span class="math inline">\(u &gt; 0\)</span> (see exercise 3.23).</li>
+</ol>
+<ul>
+<li><p>Inner function <span class="math inline">\(g(x,t) = t^p - \|x\|_p^p\)</span>is concave as in part d.</p></li>
+<li><p>Outer logarithm function <span class="math inline">\(-\log(k)\)</span> is convex as an opposite to concave <span class="math inline">\(\log(k)\)</span>, and strictly decreasing for <span class="math inline">\(k&gt;0\)</span>.</p></li>
+<li><p>The composition of strictly decreasing convex function with a concave function <strong>is convex</strong>.</p></li>
+</ul>
+</section>
+<section id="problem-5-exercise-3.24" class="level2">
+<h2 class="anchored" data-anchor-id="problem-5-exercise-3.24">Problem 5: Exercise 3.24</h2>
+<p>Some functions on the probability simplex. Let <span class="math inline">\(x\)</span> be a real-valued random variable which takes values in <span class="math inline">\(\{a_1, \ldots, a_n\}\)</span> where <span class="math inline">\(a_1 &lt; a_2 &lt; \cdots &lt; a_n\)</span>, with <span class="math inline">\(\text{prob}(x = a_i) = p_i, i = 1, \ldots, n\)</span>. For each of the following functions of <span class="math inline">\(p\)</span> (on the probability simplex <span class="math inline">\(\{ p \in \mathbf{R}_+^n \mid 1^T p = 1 \}\)</span>), determine if the function is convex, concave, quasiconvex, or quasiconcave.</p>
+<ol type="a">
+<li><p><span class="math inline">\(\mathbf{E} x\)</span>.</p></li>
+<li><p><span class="math inline">\(\text{prob}(x \geq \alpha)\)</span>.</p></li>
+<li><p><span class="math inline">\(\text{prob}(\alpha \leq x \leq \beta)\)</span>.</p></li>
+<li><p><span class="math inline">\(\sum_{i=1}^n p_i \log p_i,\)</span> the negative entropy of the distribution.</p></li>
+<li><p><span class="math inline">\(\text{var} \ x = \mathbf{E}(x - \mathbf{E}x)^2\)</span>.</p></li>
+<li><p><span class="math inline">\(\text{quartile}(x) = \inf \{ \beta \mid \text{prob}(x \leq \beta) \geq 0.25 \}\)</span>.</p></li>
+<li><p>The cardinality of the smallest set <span class="math inline">\(\mathcal{A} \subseteq \{a_1, \ldots, a_n\}\)</span> with probability <span class="math inline">\(\geq 90\%\)</span>. (By cardinality we mean the number of elements in <span class="math inline">\(\mathcal{A}\)</span>).</p></li>
+<li><p>The minimum width interval that contains 90% of the probability, i.e., <span class="math inline">\(\inf \{ \beta - \alpha \mid \text{prob}(\alpha \leq x \leq \beta) \geq 0.9 \}\)</span></p></li>
+</ol>
+<p><strong>Solution:</strong></p>
+<ol type="a">
+<li><p><span class="math inline">\(\mathbf{E} x =  \sum_{i=1}^np_ia_i = \mathbf{a}^T \mathbf{p}\)</span>, each <span class="math inline">\(f(a_i)\)</span> is a constant (Boyd &amp; Vandenberghe, 2004, p.62). This is a linear function, it <strong>is convex and concave</strong> (Boyd &amp; Vandenberghe, 2004, 3.1.5 Examples, p.72). As a result, linear functions are also <strong>quasiconvex and quasiconcave</strong> since their sublevel and superlevel sets are halfspaces, thus convex (<span class="math inline">\(\{p \ | \  \mathbf{a}^T \mathbf{p} \leq \alpha \}, \{p \ | \  \mathbf{a}^T \mathbf{p} \geq \alpha \}\)</span>).</p></li>
+<li><p><span class="math inline">\(\text{prob}(x \geq \alpha) = \sum_{a_i \geq \alpha} p_i\)</span>, the probability as the sum of probabilities where <span class="math inline">\(x \geq \alpha\)</span> (we get a linear function of p), where <span class="math inline">\(i = l\)</span> , . . . , <span class="math inline">\(n\)</span>, <span class="math inline">\(l\)</span> is a smallest index such that <span class="math inline">\(a_l \geq \alpha\)</span>. This is a linear function. It <strong>is convex and concave</strong> (Boyd &amp; Vandenberghe, 2004, 3.1.5 Examples, p.72). As a result, linear functions are also <strong>quasiconvex and quasiconcave</strong> since their sublevel and superlevel sets are halfspaces, thus convex (<span class="math inline">\(\{p \ | \  \text{prob}(x \geq \alpha) \leq k \}, \{p \ | \  \text{prob}(x \geq \alpha) \geq k \}\)</span>).</p></li>
+<li><p><span class="math inline">\(\text{prob}(\alpha \leq x \leq \beta) = \sum_{a_i \geq \alpha}^{a_i \leq \beta} p_i\)</span>, the probability as the sum of probabilities where <span class="math inline">\(x \geq \alpha\)</span> (we get a linear function of p), where <span class="math inline">\(i = l\)</span> , . . . , <span class="math inline">\(n\)</span>, <span class="math inline">\(l\)</span> is a smallest index such that <span class="math inline">\(a_l \geq \alpha\)</span>, <span class="math inline">\(n\)</span> is the largest index such that <span class="math inline">\(a_l \leq \beta\)</span>. This is a linear function. It <strong>is convex and concave</strong>. As a result, linear functions are also <strong>quasiconvex and quasiconcave</strong> since their sublevel and superlevel sets are halfspaces, thus convex (<span class="math inline">\(\{p \ | \  \text{prob}(\alpha \leq x \leq \beta) \leq k \}, \{p \ | \  \text{prob}(\alpha \leq x \leq \beta) \geq k \}\)</span>).</p></li>
+<li><p><span class="math inline">\(\sum_{i=1}^n p_i \log p_i,\)</span> the negative entropy of the distribution. Based on Boyd &amp; Vandenberghe, 2004, 3.1.5 Examples, p.72, negative entropy <strong>is strictly convex</strong> , thus, <strong>quasiconvex</strong>. It is proven using second derivative which is positive <span class="math inline">\(f"(p)=\frac{1}{p} &gt; 0\)</span>. It is <strong>not concave</strong>, as the second derivative is not negative. As a result, <strong>not quasiconcave</strong>.</p></li>
+<li><p><span class="math inline">\(\text{var} \ x = \mathbf{E}(x - \mathbf{E}x)^2 = \sum_{i=1}^np_ia_i^2 - (\sum_{i=1}^np_ia_i)^2\)</span>. The first part <span class="math inline">\(\sum_{i=1}^np_ia_i^2\)</span> is linear on <span class="math inline">\(p\)</span>, hence both convex and concave. The second part is the negative of a convex square of a linear function <span class="math inline">\((\sum_{i=1}^np_ia_i)^2\)</span>, thus <span class="math inline">\(-(\sum_{i=1}^np_ia_i)^2\)</span> is concave (Boyd &amp; Vandenberghe, 2004, 3.1.5 Examples, p.68). Adding a linear function (convex/concave) and a concave function yields an overall <strong>concave</strong> function. As a result, <strong>quasiconcave</strong> (superlevel sets are convex). Because of that negative quadratic term, the function <strong>is not convex</strong>, therefore <strong>not quasiconvex</strong>.</p></li>
+<li><p><span class="math inline">\(\text{quartile}(x) = \inf \{ \beta \mid \text{prob}(x \leq \beta) \geq 0.25 \}\)</span>. This is the 25th percentile of <span class="math inline">\(x\)</span>. As a function of <span class="math inline">\(p\)</span>, it is typically piecewise constant, and can “jump” at certain distributions, it is <strong>neither convex nor concave</strong> (Boyd &amp; Vandenberghe, 2004, 3.1.5 Examples, p.68). The sublevel and superlevel sets are convex, because the percentile is a non-decreasing function, these sets are also halfspaces in <span class="math inline">\(p\)</span>, <span class="math inline">\((p \ | \  \text{prob}(x \leq \beta) \geq 0.25 \}, \{p \ | \  \text{prob}(x \geq \beta) \geq 0.25 \}\)</span>). As a result, this function is <strong>quasiconvex and quasiconcave</strong>.</p></li>
+<li><p>The cardinality of the smallest set <span class="math inline">\(\mathcal{A} \subseteq \{a_1, \ldots, a_n\}\)</span> with probability <span class="math inline">\(\geq 90\%\)</span>. (By cardinality we mean the number of elements in <span class="math inline">\(\mathcal{A}\)</span>). Since this counts the number of points in a chosen set covering at least 90% of the probability mass, it changes in discrete jumps, it is <strong>neither convex nor concave</strong> (Boyd &amp; Vandenberghe, 2004, 3.1.5 Examples, p.68). The sublevel sets <span class="math inline">\(\{p \ | \ f(p) \leq \alpha \}, \ \text{for k=1} \ \{p \ | \ \max{p_{i}} \geq 0.9 \}\)</span> mean that there exists a subset of size <span class="math inline">\(\alpha\)</span> that covers 90%. This is a union of constraints, so these sets typically are not convex, thus the function is <strong>not quasiconvex</strong>. The superlevel sets <span class="math inline">\(\{p \ | \ f(p) \geq \alpha \}, \ \text{for k=1} \ \{p \ | \ \max{p_{i}} &lt; 0.9 \}\)</span> mean that every subset of size less than <span class="math inline">\(\alpha\)</span> has &lt; 90% coverage. This becomes an intersection of linear constraints on <span class="math inline">\(p\)</span>, which is usually convex, so the function is <strong>quasiconcave</strong>.</p></li>
+<li><p>The minimum width interval that contains 90% of the probability, i.e., <span class="math inline">\(\inf \{ \beta - \alpha \mid \text{prob}(\alpha \leq x \leq \beta) \geq 0.9 \}\)</span>.</p>
+<p>The superlevel set <span class="math inline">\(\{p \ | \ f(p) \geq \gamma\}\)</span> for <span class="math inline">\(\gamma &gt; 0\)</span> consists of all distributions <span class="math inline">\(p\)</span> for which no interval of width &lt; <span class="math inline">\(\gamma\)</span> contains 90% of the mass. In other words, for every interval such interval <span class="math inline">\([a_i, a_n]\)</span> with <span class="math inline">\(a_n-a_i &lt; \gamma\)</span>, we have <span class="math inline">\(\sum_{k=i}^n p_k &lt; 0.9\)</span>. This is a collection of linear inequalities on <span class="math inline">\(p\)</span>, so it is convex. Superlevel sets are convex, the function <strong>is quasiconcave</strong>.</p>
+<p>The sublevel set <span class="math inline">\(\{p \ | \ f(p) \leq \gamma\}\)</span> means there exists an interval of width <span class="math inline">\(\leq \gamma\)</span> containing 90% probability, it is not always convex, and the function <strong>is not quasiconvex</strong>. For example, <span class="math inline">\(a_1 &lt; a_2 &lt; a_3 &lt; a_4, p_1 = (0.1, 0.8, 0.0, 0.1), p_2 = (0.1, 0.0, 0.8, 0.1)\)</span>. The midpoint is not in the sublevel set <span class="math inline">\(p_3 = 0.5p_1 + 0.5p_2 = (0.1, 0.4, 0.4, 0.1)\)</span>. A convex combination of two points in the sublevel set can result in a point outside the set.</p>
+<p>The function is <strong>not generally convex or concave</strong> because it can have flat regions and discontinuities at points where the 90% interval jumps from one set of points to another.</p></li>
+</ol>
+<p><strong>Conclusion:</strong></p>
+<ol type="a">
+<li><p>Convex, concave, quasiconvex, quasiconcave.</p></li>
+<li><p>Convex, concave, quasiconvex, quasiconcave.</p></li>
+<li><p>Convex, concave, quasiconvex, quasiconcave.</p></li>
+<li><p>Convex, not concave, quasiconvex, not quasiconcave.</p></li>
+<li><p>Not convex, concave, not quasiconvex, quasiconcave.</p></li>
+<li><p>Not convex, not concave, quasiconvex, quasiconcave.</p></li>
+<li><p>Not convex, not concave, not quasiconvex, quasiconcave.</p></li>
+<li><p>Not convex, not concave, not quasiconvex, quasiconcave.</p></li>
+</ol>
+</section>
+<section id="reference" class="level2">
+<h2 class="anchored" data-anchor-id="reference">Reference</h2>
+<ol type="1">
+<li><p>Boyd, S., &amp; Vandenberghe, L. (2004). <em>Convex optimization</em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511804441" class="uri">https://doi.org/10.1017/CBO9780511804441</a></p></li>
+<li><p>Wolfram|Alpha: Making the world’s knowledge computable. (n.d.). <a href="https://www.wolframalpha.com/" class="uri">https://www.wolframalpha.com/</a></p></li>
+</ol>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

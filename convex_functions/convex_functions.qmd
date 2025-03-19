@@ -1,0 +1,269 @@
+---
+title: "Homework 4: Convex Functions"
+author: "Daria Dubovskaia"
+format: pdf
+editor: visual
+css: styles.css
+---
+
+## Problem 1: Exercise 3.2
+
+Level sets of convex, concave, quasiconvex, and quasiconcave functions. Some level sets of a function $f$ are shown below. The curve labeled 1 shows $\{x | f(x) = 1\}$, etc.
+
+![](images/Screenshot 2025-03-18 225234.png)
+
+Could $f$ be convex (concave, quasiconvex, quasiconcave)? Explain your answer. Repeat for the level curves shown below.
+
+![](images/Screenshot 2025-03-18 225252.png)
+
+**Solution:**
+
+-   For the first picture, $\{x | f(x) \leq 1\}$ is the innermost oval, $\{x | f(x) \leq 2\}$ is the next oval, etc. These nested ovals can be convex regions. That suggests that all sublevel sets might be convex, which would make this function quasiconvex. Also, Figure 3.12, Boyd & Vandenberghe, 2004, p.100 shows three level curves of a quasiconvex function similar to the first picture. But if we draw a line across all three ovals, we can see that this function can first decrease and then increase which violates convexity along this line, so this function is not globally convex. For this function to be concave, the superlevel sets $\{x \ | \ f(x) \geq \alpha \}$ have to be convex, but the outer part of each oval $\{x | f(x) \geq 1\}$, etc, forms hollow oval region, which is not convex. This function could be **quasiconvex**, but **not convex**, and **not concave or quasiconcave**.
+
+-   The sublevel set $\{x | f(x) \leq 6\}$ could contain the regions inside curves 1-5 plus a separate region around curve 6. So we are having two separated blobs, the sublevel set is a union of disjoint sets, which is not convex (unless one set is contained entirely in the other). Since not all sublevel sets are convex, this figure **is not a convex or quasiconvex**. But superlevel sets $\{x | f(x) \geq \alpha \}$ could form large connected regions that peel off piece by piece, possibly remaining convex at each stage. So this function **could be concave, and therefore also quasiconcave.**
+
+## Problem 2: Exercise 3.6
+
+Functions and epigraphs. When is the epigraph of a function a halfspace? When is the epigraph of a function a convex cone? When is the epigraph of a function a polyhedron?
+
+**Solution:**
+
+The epigraph of a function $f: \ \mathbf{R}^n   \rightarrow \mathbf{R}$ is defined as $\textbf{epi} \ f = \{(x,t) \ | \ x \in \textbf{dom} \ f, f(x) \leq t \}$ (Boyd & Vandenberghe, 2004, p.75).
+
+-   The epigraph of a function is a halfspace if and only if $f$ is an affine function. All affine (and therefore also linear) functions are both convex and concave. Conversely, any function that is convex and concave is affine.(Boyd & Vandenberghe, 2004, p.67). For the affine function $f(x)=a^Tx + b$, where $a \in \mathbf{R}^n, b \in \mathbf{R}$, the epigraph is $\textbf{epi} \ f = \{(x,t) \ | a^Tx + b \leq t \}$ which is a halfspace in $\mathbf{R}^{n+1}$ (Boyd & Vandenberghe, 2004, 3.1.7 Epigraph, p.75).
+
+-   The epigraph of a function is a convex cone if and only if $f$ is convex and positively homogeneous, meaning that for the function $f( \alpha x) = \alpha f(x), \forall \alpha \geq 0$, the epigraph is $(x,t) \in \textbf{epi} \ f \Rightarrow (\alpha x, \alpha t) \in \textbf{epi} \ f, \forall \alpha \geq 0$. That is, if we take any point in the epigraph and scale it by a positive factor, the scaled point must still be in the epigraph, meaning it is closed under positive scaling. Since a convex cone is a set that is closed under positive scaling, the epigraph of a positively homogeneous convex function is always a convex cone (Boyd & Vandenberghe, 2004, Example 3.3, p.75).
+
+-   The epigraph of a function is a polyhedron (intersection of multiple halfspaces) if and only if $f$ is piecewise-affine function: $f(x) = \textbf{max} \{a_1^Tx + b_1, \ldots , a_L^Tx + b_L \}$, the epigraph is $\textbf{epi} \ f = \{(x,t) \ | \ a_i^Tx + b_i \leq t, \ i = 1, \ldots, L \}$. Since each constraint $\ a_i^Tx + b_i \leq t$ defines a halfspace, and a polyhedron is an intersection of multiple halfspaces, it follows that the epigraph of a piecewise-affine function is a polyhedron.(Boyd & Vandenberghe, 2004, Example 3.5, p.80).
+
+## Problem 3: Exercise 3.16
+
+For each of the following functions determine whether it is convex, concave, quasiconvex, or quasiconcave.
+
+(a) $f(x) = e^x − 1$ on $\mathbf{R}$.
+
+(b) $f(x_1, x_2) = x_1 x_2$ on $\mathbf{R^2_{++}}$
+
+(c) $f(x_1, x_2) = 1/(x_1 x_2)$ on $\mathbf{R^2_{++}}$
+
+(d) $f(x_1, x_2) = x_1/x_2$ on $\mathbf{R^2_{++}}$
+
+(e) $f(x_1, x_2) = x^2_1/x_2$ on $\mathbf{R} \times \mathbf{R_{++}}$
+
+(f) $f(x_1, x_2) = x^\alpha_1 x^{1−α}_2$, where $0 \leq \alpha \leq 1$, on $\mathbf{R^2_{++}}$
+
+**Solution:**
+
+(a) $f(x) = e^x − 1$ on $\mathbf{R}$.
+
+-   Convexity, Concavity: the second derivative is $f^{''}(x) = e^x$. The function **is strictly convex**, since $e^x > 0, \forall x \in \mathbf{R}$ (Boyd & Vandenberghe, 2004, 3.1.4 Second-order conditions, p.101). Since $f^{''}(x) > 0$, this function **is not concave**.
+
+-   Quasiconvexity, Quasiconcavity: since this exponential function is strictly convex, it **is quasiconvex**. Also, this function is increasing, and monotonic functions are both quasiconvex and **quasiconcave** (Boyd & Vandenberghe, 2004, 3.4 Quasiconvex functions, p.95).
+
+(b) $f(x_1, x_2) = x_1 x_2$ on $\mathbf{R^2_{++}}$.
+
+-   Convexity, Concavity: convexity requires the Hessian to be positive semidefinite (Boyd & Vandenberghe, 2004, p. 71). The Hessian is indefinite (one positive and one negative eigenvalue), so the function **is neither convex nor concave**. $$
+    H =
+    \begin{bmatrix}
+    0 & 1 \\
+    1 & 0 \\
+    \end{bmatrix}.
+    $$
+
+-   Quasiconvexity, Quasiconcavity: the function **is not quasiconvex** because its sublevel sets are not convex $\{(x_1,x_2) \ | \ x_1x_2 \leq \alpha \}$. It **is quasiconcave** because the superlevel sets are convex sets $\{(x_1,x_2) \ | \ x_1x_2 \geq \alpha \}$ for $\alpha>0$ (Boyd & Vandenberghe, 2004, Example 3.31, p.96). Or we can take logarithms $\log \ f(x_1,x_2) = \log(x_1) + \log(x_2)$, $\log$ is concave, we get a concave function, log-concavity implies quasiconcavity (Boyd & Vandenberghe, 2004, 3.5 Log-concave and log-convex functions, p.104).
+
+(c) $f(x_1, x_2) = 1/(x_1 x_2)$ on $\mathbf{R^2_{++}}$
+
+-   Convexity, Concavity: the Hessian is positive definite, thus, function **is strictly convex** (Boyd & Vandenberghe, 2004, 3.1.4 Second-order conditions, p.101). It is **not concave** as Hessian is not negative semidefinite.
+
+$$
+H =
+\begin{bmatrix}
+\frac{2}{x_1^3x_2} & \frac{1}{x_1^2x_2^2} \\
+\frac{1}{x_1^2x_2^2} & \frac{2}{x_1x_2^3} \\
+\end{bmatrix}, \\
+\text{determinant} = \frac{3}{x_1^4x_2^4} >0.
+$$
+
+-   Quasiconvexity, Quasiconcavity: since this function is strictly convex, it **is quasiconvex**. Superlevel sets $\{x \in \text{dom} \ f \ | \ \frac{1}{x_1x_2} \geq \alpha \}$, or $\{x_1x_2 \leq \frac{1}{\alpha} \}$, are sublevel sets from part (b). As a result, this function is **not quasiconcave.**
+
+(d) $f(x_1, x_2) = x_1/x_2$ on $\mathbf{R^2_{++}}$.
+
+-   Convexity, Concavity: the Hessian isis indefinite, thus, function **is neither convex nor concave**.
+
+$$
+H =
+\begin{bmatrix}
+0 & -\frac{1}{x_2^2} \\
+-\frac{1}{x_2^2} & \frac{2x_1}{x_2^3} \\
+\end{bmatrix}, \\
+\text{determinant} = -\frac{1}{x_2^4} < 0.
+$$
+
+-   Quasiconvexity, Quasiconcavity: sublevel sets are $\{x_1 \leq \alpha x_2\}$ which is halfspace (also restricted by $\mathbf{R^2_{++}}$, convex). The function **is quasiconvex**. Superlevel sets are$\{x_1 \geq \alpha x_2\}$ which is halfspace (convex). The function **is quasiconcave**.
+
+(e) $f(x_1, x_2) = x^2_1/x_2$ on $\mathbf{R} \times \mathbf{R_{++}}$
+
+-   Convexity, Concavity: the Hessian is positive semidefinite, thus, function **is convex**, but **not concave**, as Hessian not negative definite. (Boyd & Vandenberghe, 2004, Figure 3.3, p.72).
+
+$$
+H =
+\begin{bmatrix}
+\frac{2}{x_2} & -\frac{2 x_1}{x_2^2} \\
+-\frac{2 x_1}{x_2^2} & \frac{2x_1^2}{x_2^3} \\
+\end{bmatrix}, \\
+\text{determinant} = 0.
+$$
+
+-   Quasiconvexity, Quasiconcavity: The function **is quasiconvex** as its sublevels are convex. Based on the Figure 3.3, the function **is not quasiconcave**.
+
+(f) $f(x_1, x_2) = x^\alpha_1 x^{1−α}_2$, where $0 \leq \alpha \leq 1$, on $\mathbf{R^2_{++}}$
+
+-   Convexity, Concavity: this is the standard geometric mean-type function (for $\alpha \in (0,1)$) (Boyd & Vandenberghe, 2004, 3.1 Basic properties and examples, p.74) which is **concave** on $\mathbf{R^2_{++}}$. Hessian is negative semidefinite, determinant zero. The function **is not convex**.
+
+$$
+H =
+\begin{bmatrix}
+(\alpha-1)\alpha x_1^{\alpha-2} x_2^{1-\alpha} & (1-\alpha) \alpha x_1^{\alpha-1} x_2^{-\alpha} \\
+(1-\alpha) \alpha x_1^{\alpha-1} x_2^{-\alpha} & -((1-\alpha)\alpha x_1^\alpha x_2^{-\alpha-1}) \\
+\end{bmatrix}, \\
+\text{determinant} = 0.
+$$
+
+-   Quasiconvexity, Quasiconcavity: sublevel sets $\{x_1,x_2 \ | \  x^\alpha_1 x^{1−α}_2 \leq k \}$ are not convex. If we take two points witht the same geometric mean ($(1,k^2),(k^2,1)$), and they both are $\leq k$, their midpoints has geometric mean $>k$. So **not quasiconvex**. Since this function is concave, so **quasiconcave** (since all of its superlevel sets $\{x_1,x_2 \ | \  x^\alpha_1 x^{1−α}_2 \geq k \}$ are convex).
+
+**Conclusion:**
+
+a)  Convex, not concave, quasiconvex, quasiconcave.
+
+b)  Not convex, not concave, not quasiconvex, quasiconcave.
+
+c)  Convex, not concave, quasiconvex, not quasiconcave.
+
+d)  Not convex, not concave, quasiconvex, quasiconcave.
+
+e)  Convex, not concave, quasiconvex, not quasiconcave.
+
+f)  Not convex, concave, not quasiconvex, quasiconcave.
+
+## Problem 4: Exercise 3.22
+
+Composition rules. Show that the following functions are convex.
+
+(a) $f(x) = -\log\left(-\log\sum_{i=1}^m e{a_iT x + b_i}\right)$ on $\text{dom} \, f = \left\{ x \mid \sum_{i=1}^m e^{a_i^T x + b_i} < 1 \right\}$. You can use the fact that $\log\left(\sum_{i=1}^n e^{y_i}\right)$ is convex.
+
+(b) $f(x, u, v) = -\sqrt{u v - x^T x}$ on $\text{dom} \, f = \left\{ (x, u, v) \mid u v > x^T x, \, u, v > 0 \right\}$. Use the fact that $x^T x / u$ is convex in $(x, u)$ for $u > 0$, and that $-\sqrt{x_1 x_2}$ is convex on $\mathbf{R^2_{++}}$.
+
+(c) $f(x, u, v) = -\log(u v - x^T x)$ on $\text{dom} \, f = \left\{ (x, u, v) \mid u v > x^T x, \, u, v > 0 \right\}$.
+
+(d) $f(x, t) = - (t^p - \|x\|_p^p)^{1/p}$ where $p > 1$ and $\text{dom} \, f = \left\{ (x, t) \mid t \geq \|x\|_p \right\}$. You can use the fact that $\|x\|_p^p / u^{p-1}$ is convex in $(x, u)$ for $u > 0$ (see exercise 3.23), and that $-x^{1/p} y^{1-1/p}$ is convex on $\mathbf{R^2_{+}}$. (see exercise 3.16).
+
+(e) $f(x, t) = -\log(t^p - \|x\|_p^p)$ where $p > 1$ and $\text{dom} \, f = \left\{ (x, t) \mid t > \|x\|_p \right\}$. You can use the fact that $\|x\|_p^p / u^{p-1}$ is convex in $(x, u)$ for $u > 0$ (see exercise 3.23).
+
+**Solution:**
+
+(a) $f(x) = -\log\left(-\log\sum_{i=1}^m e{a_iT x + b_i}\right)$ on $\text{dom} \, f = \left\{ x \mid \sum_{i=1}^m e^{a_i^T x + b_i} < 1 \right\}$. You can use the fact that $\log\left(\sum_{i=1}^n e^{y_i}\right)$ is convex.
+
+-   each term $e^{a_i^T x + b_i}$ is convex as exponential function (from its positive second derivative), $y_i = a_i^T x + b_i$ is affine, the sum of convex functions is convex $g(y)=\sum_{i=1}^m e^{y_i}$. Given that $\log(g(y)) = \log\left(\sum_{i=1}^n e^{y_i}\right)$ is convex. A composition with an affine function preserves convexity, so: $\log(g(x)) = \log\sum_{i=1}^m e^{ a_i^T x + b_i}$ is **convex**.
+
+-   Since the domain is $\text{dom} \, f = \left\{ x \mid \sum_{i=1}^m e^{a_i^T x + b_i} < 1 \right\}, \log\sum_{i=1}^m e^{ a_i^T x + b_i} < 0, -\log\sum_{i=1}^m e^{ a_i^T x + b_i} > 0$. For a shorter notation, $h(x) = \log\sum_{i=1}^m e^{ a_i^T x + b_i}, h(x) < 0, - h(x) > 0$. As a result, in $-\log(-h(x))$, we have $h(x)$ convex, $-h(x)$ is concave, $\log(-h(x))$ is concave (log is concave and increasing, applied to a concave function, Boyd & Vandenberghe, 2004, 3.5 Log-concave and log-convex functions, p.104), $-\log(-h(x))$ is convex (negative of a concave function).
+
+-   $f(x) = -\log\left(-\log\sum_{i=1}^m e^{a_i^T x + b_i}\right)$ **is convex.**
+
+(b) $f(x, u, v) = -\sqrt{u v - x^T x}$ on $\text{dom} \, f = \left\{ (x, u, v) \mid u v > x^T x, \, u, v > 0 \right\}$. Use the fact that $x^T x / u$ is convex in $(x, u)$ for $u > 0$, and that $-\sqrt{x_1 x_2}$ is convex on $\mathbf{R^2_{++}}$.
+
+-   We can rewrite the function as $f(x, u, v) = -\sqrt{u(v - \frac{x^T x}{u})}$. $\frac{x^T x}{u}$ is convex (given in the problem statement), $v - \frac{x^T x}{u}$ is concave in $x,u,v$ (as linear $v$ minus convex). This concave component is multiplied by a positive $u$ is also concave. So $u v - x^T x$ is concave.
+
+-   The outer square root $-\sqrt{t}$ is convex (as opposite to a power concave function) and strictly decreasing on $t>0$ (Power functions $x^a$ are concave for $0\leq a \leq 1$, Boyd & Vandenberghe, 2004, 3.1.5 Examples, p.71)
+
+-   We have a composition of concave expression with convex expression which is decreasing, we get **convex** (Boyd & Vandenberghe, 2004, (3.10) Scalar composition, p.84).
+
+(c) $f(x, u, v) = -\log(u v - x^T x)$ on $\text{dom} \, f = \left\{ (x, u, v) \mid u v > x^T x, \, u, v > 0 \right\}$.
+
+-   As in part (b) $u v - x^T x$ is concave. With the concave component $y = u v - x^T x > 0$, we have $f(y) = -\log(y), y > 0$, this function is strictly decreasing and is convex ($\log(x)$ is concave on $\mathbf{R^2_{++}}$, the opposite function is convex, Boyd & Vandenberghe, 2004, 3.1.5 Examples, p.71). The result of the convex, decreasing fucntion with concave component give us a convex function (Boyd & Vandenberghe, 2004, Scalar composition, p.84).
+
+-   $f(x, u, v) = -\log(u v - x^T x)$ **is convex.**
+
+(d) $f(x, t) = - (t^p - \|x\|_p^p)^{1/p}$ where $p > 1$ and $\text{dom} \, f = \left\{ (x, t) \mid t \geq \|x\|_p \right\}$. You can use the fact that $\|x\|_p^p / u^{p-1}$ is convex in $(x, u)$ for $u > 0$ (see exercise 3.23), and that $-x^{1/p} y^{1-1/p}$ is convex on $\mathbf{R^2_{+}}$. (see exercise 3.16).
+
+-   Inner function $g(x,t) = t^p - \|x\|_p^p$is concave on $\text{dom} \, f = \left\{ (x, t) \mid t \geq \|x\|_p \right\}$. Since $\|x\|_p^p / t^{p-1}$ is convex in $(x, t)$ for $t > 0$, we can rewrite $t^p - \|x\|_p^p = t^p(1-\|x\|_p^p / t^{p})$. $\|x\|_p^p / t^{p}$ also exhibits the correct (convex) curvature property, the opposite to it $-\|x\|_p^p / t^{p}$ is concave. Multiplying a concave function $1-\|x\|_p^p / t^{p}$ and by a positive scalar $t^p$ on the domain $t \geq \|x\|_p$ preserves concavity.
+
+-   Outer power function $-k^{1/p}$ is convex (as opposite to a power concave function, power functions $x^a$ are concave for $0\leq a \leq 1$, Boyd & Vandenberghe, 2004, 3.1.5 Examples, p.71), it is also strictly decreasing for $k>0$.
+
+-   The composition of strictly decreasing convex function with a concave function **is convex**.
+
+(e) $f(x, t) = -\log(t^p - \|x\|_p^p)$ where $p > 1$ and $\text{dom} \, f = \left\{ (x, t) \mid t > \|x\|_p \right\}$. You can use the fact that $\|x\|_p^p / u^{p-1}$ is convex in $(x, u)$ for $u > 0$ (see exercise 3.23).
+
+-   Inner function $g(x,t) = t^p - \|x\|_p^p$is concave as in part d.
+
+-   Outer logarithm function $-\log(k)$ is convex as an opposite to concave $\log(k)$, and strictly decreasing for $k>0$.
+
+-   The composition of strictly decreasing convex function with a concave function **is convex**.
+
+## Problem 5: Exercise 3.24
+
+Some functions on the probability simplex. Let $x$ be a real-valued random variable which takes values in $\{a_1, \ldots, a_n\}$ where $a_1 < a_2 < \cdots < a_n$, with $\text{prob}(x = a_i) = p_i, i = 1, \ldots, n$. For each of the following functions of $p$ (on the probability simplex $\{ p \in \mathbf{R}_+^n \mid 1^T p = 1 \}$), determine if the function is convex, concave, quasiconvex, or quasiconcave.
+
+(a) $\mathbf{E} x$.
+
+(b) $\text{prob}(x \geq \alpha)$.
+
+(c) $\text{prob}(\alpha \leq x \leq \beta)$.
+
+(d) $\sum_{i=1}^n p_i \log p_i,$ the negative entropy of the distribution.
+
+(e) $\text{var} \ x = \mathbf{E}(x - \mathbf{E}x)^2$.
+
+(f) $\text{quartile}(x) = \inf \{ \beta \mid \text{prob}(x \leq \beta) \geq 0.25 \}$.
+
+(g) The cardinality of the smallest set $\mathcal{A} \subseteq \{a_1, \ldots, a_n\}$ with probability $\geq 90\%$. (By cardinality we mean the number of elements in $\mathcal{A}$).
+
+(h) The minimum width interval that contains 90% of the probability, i.e., $\inf \{ \beta - \alpha \mid \text{prob}(\alpha \leq x \leq \beta) \geq 0.9 \}$
+
+**Solution:**
+
+(a) $\mathbf{E} x =  \sum_{i=1}^np_ia_i = \mathbf{a}^T \mathbf{p}$, each $f(a_i)$ is a constant (Boyd & Vandenberghe, 2004, p.62). This is a linear function, it **is convex and concave** (Boyd & Vandenberghe, 2004, 3.1.5 Examples, p.72). As a result, linear functions are also **quasiconvex and quasiconcave** since their sublevel and superlevel sets are halfspaces, thus convex ($\{p \ | \  \mathbf{a}^T \mathbf{p} \leq \alpha \}, \{p \ | \  \mathbf{a}^T \mathbf{p} \geq \alpha \}$).
+
+(b) $\text{prob}(x \geq \alpha) = \sum_{a_i \geq \alpha} p_i$, the probability as the sum of probabilities where $x \geq \alpha$ (we get a linear function of p), where $i = l$ , . . . , $n$, $l$ is a smallest index such that $a_l \geq \alpha$. This is a linear function. It **is convex and concave** (Boyd & Vandenberghe, 2004, 3.1.5 Examples, p.72). As a result, linear functions are also **quasiconvex and quasiconcave** since their sublevel and superlevel sets are halfspaces, thus convex ($\{p \ | \  \text{prob}(x \geq \alpha) \leq k \}, \{p \ | \  \text{prob}(x \geq \alpha) \geq k \}$).
+
+(c) $\text{prob}(\alpha \leq x \leq \beta) = \sum_{a_i \geq \alpha}^{a_i \leq \beta} p_i$, the probability as the sum of probabilities where $x \geq \alpha$ (we get a linear function of p), where $i = l$ , . . . , $n$, $l$ is a smallest index such that $a_l \geq \alpha$, $n$ is the largest index such that $a_l \leq \beta$. This is a linear function. It **is convex and concave**. As a result, linear functions are also **quasiconvex and quasiconcave** since their sublevel and superlevel sets are halfspaces, thus convex ($\{p \ | \  \text{prob}(\alpha \leq x \leq \beta) \leq k \}, \{p \ | \  \text{prob}(\alpha \leq x \leq \beta) \geq k \}$).
+
+(d) $\sum_{i=1}^n p_i \log p_i,$ the negative entropy of the distribution. Based on Boyd & Vandenberghe, 2004, 3.1.5 Examples, p.72, negative entropy **is strictly convex** , thus, **quasiconvex**. It is proven using second derivative which is positive $f"(p)=\frac{1}{p} > 0$. It is **not concave**, as the second derivative is not negative. As a result, **not quasiconcave**.
+
+(e) $\text{var} \ x = \mathbf{E}(x - \mathbf{E}x)^2 = \sum_{i=1}^np_ia_i^2 - (\sum_{i=1}^np_ia_i)^2$. The first part $\sum_{i=1}^np_ia_i^2$ is linear on $p$, hence both convex and concave. The second part is the negative of a convex square of a linear function $(\sum_{i=1}^np_ia_i)^2$, thus $-(\sum_{i=1}^np_ia_i)^2$ is concave (Boyd & Vandenberghe, 2004, 3.1.5 Examples, p.68). Adding a linear function (convex/concave) and a concave function yields an overall **concave** function. As a result, **quasiconcave** (superlevel sets are convex). Because of that negative quadratic term, the function **is not convex**, therefore **not quasiconvex**.
+
+(f) $\text{quartile}(x) = \inf \{ \beta \mid \text{prob}(x \leq \beta) \geq 0.25 \}$. This is the 25th percentile of $x$. As a function of $p$, it is typically piecewise constant, and can "jump" at certain distributions, it is **neither convex nor concave** (Boyd & Vandenberghe, 2004, 3.1.5 Examples, p.68). The sublevel and superlevel sets are convex, because the percentile is a non-decreasing function, these sets are also halfspaces in $p$, $(p \ | \  \text{prob}(x \leq \beta) \geq 0.25 \}, \{p \ | \  \text{prob}(x \geq \beta) \geq 0.25 \}$). As a result, this function is **quasiconvex and quasiconcave**.
+
+(g) The cardinality of the smallest set $\mathcal{A} \subseteq \{a_1, \ldots, a_n\}$ with probability $\geq 90\%$. (By cardinality we mean the number of elements in $\mathcal{A}$). Since this counts the number of points in a chosen set covering at least 90% of the probability mass, it changes in discrete jumps, it is **neither convex nor concave** (Boyd & Vandenberghe, 2004, 3.1.5 Examples, p.68). The sublevel sets $\{p \ | \ f(p) \leq \alpha \}, \ \text{for k=1} \ \{p \ | \ \max{p_{i}} \geq 0.9 \}$ mean that there exists a subset of size $\alpha$ that covers 90%. This is a union of constraints, so these sets typically are not convex, thus the function is **not quasiconvex**. The superlevel sets $\{p \ | \ f(p) \geq \alpha \}, \ \text{for k=1} \ \{p \ | \ \max{p_{i}} < 0.9 \}$ mean that every subset of size less than $\alpha$ has \< 90% coverage. This becomes an intersection of linear constraints on $p$, which is usually convex, so the function is **quasiconcave**.
+
+(h) The minimum width interval that contains 90% of the probability, i.e., $\inf \{ \beta - \alpha \mid \text{prob}(\alpha \leq x \leq \beta) \geq 0.9 \}$.
+
+    The superlevel set $\{p \ | \ f(p) \geq \gamma\}$ for $\gamma > 0$ consists of all distributions $p$ for which no interval of width \< $\gamma$ contains 90% of the mass. In other words, for every interval such interval $[a_i, a_n]$ with $a_n-a_i < \gamma$, we have $\sum_{k=i}^n p_k < 0.9$. This is a collection of linear inequalities on $p$, so it is convex. Superlevel sets are convex, the function **is quasiconcave**.
+
+    The sublevel set $\{p \ | \ f(p) \leq \gamma\}$ means there exists an interval of width $\leq \gamma$ containing 90% probability, it is not always convex, and the function **is not quasiconvex**. For example, $a_1 < a_2 < a_3 < a_4, p_1 = (0.1, 0.8, 0.0, 0.1), p_2 = (0.1, 0.0, 0.8, 0.1)$. The midpoint is not in the sublevel set $p_3 = 0.5p_1 + 0.5p_2 = (0.1, 0.4, 0.4, 0.1)$. A convex combination of two points in the sublevel set can result in a point outside the set.
+
+    The function is **not generally convex or concave** because it can have flat regions and discontinuities at points where the 90% interval jumps from one set of points to another.
+
+**Conclusion:**
+
+a)  Convex, concave, quasiconvex, quasiconcave.
+
+b)  Convex, concave, quasiconvex, quasiconcave.
+
+c)  Convex, concave, quasiconvex, quasiconcave.
+
+d)  Convex, not concave, quasiconvex, not quasiconcave.
+
+e)  Not convex, concave, not quasiconvex, quasiconcave.
+
+f)  Not convex, not concave, quasiconvex, quasiconcave.
+
+g)  Not convex, not concave, not quasiconvex, quasiconcave.
+
+h)  Not convex, not concave, not quasiconvex, quasiconcave.
+
+## Reference
+
+1.  Boyd, S., & Vandenberghe, L. (2004). *Convex optimization*. Cambridge University Press. <https://doi.org/10.1017/CBO9780511804441>
+
+2.  Wolfram\|Alpha: Making the world’s knowledge computable. (n.d.). <https://www.wolframalpha.com/>
