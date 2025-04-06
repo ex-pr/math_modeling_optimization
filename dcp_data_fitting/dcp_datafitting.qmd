@@ -1,7 +1,7 @@
 ---
 title: "Homework 5:  Disciplined Convex Programming and Data Fitting"
 author: "Daria Dubovskaia"
-format: pdf
+format: html
 editor: visual
 css: styles.css
 ---
@@ -353,17 +353,17 @@ If our model predicts a value above the censoring threshold, we use that value; 
 
 In this problem the data are given in a JSON file with keys:
 
-**X**: a list of K=100 samples (each sample is a 20 by 1 vector, with n=20), \\
+**X**: a list of K=100 samples (each sample is a 20 by 1 vector, with n=20),
 
-**y**: a list of M=25 uncensored response values (each is a scalar stored as a 1-element list), \\
+**y**: a list of M=25 uncensored response values (each is a scalar stored as a 1-element list),
 
-$D$: the censoring lower bound (one-element list), \\
+$D$: the censoring lower bound (one-element list),
 
-$c_{true}$: the true parameter vector (20 by 1 vector), \\
+$c_{true}$: the true parameter vector (20 by 1 vector),
 
-$n$: the number of features (20), \\
+$n$: the number of features (20),
 
-$K$: total number of samples (100), \\
+$K$: total number of samples (100),
 
 $M$: number of uncensored samples (25).
 
@@ -550,12 +550,13 @@ To express this in DCP form, we need to handle the $\ell_1$ norm $\|\theta\|_1 =
 
 The problem becomes:
 
+```{=tex}
 \begin{align}
 \text{minimize} \quad & \sum_{i=1}^n \log\left(1+\exp\left(-y_i\theta^T\mathbf{x}_i + t\right)\right) \\
 \text{subject to} \quad & t \geq \epsilon \sum_{j=1}^d u_j \\
 & u_j \geq \theta_j, \ u_j \geq -\theta_j \quad j = 1, \ldots, d
 \end{align}
-
+```
 where $\theta \in \mathbb{R}^d$, $t \in  \mathbb{R}$, $u \in \mathbb{R}^d$ are variables.
 
 This formulation is a sum of log-sum-exp terms, which are convex. The constraints are linear, hence convex (Boyd & Vandenberghe, 2004, Section 4.2, p. 136). At the optimum $u_j = |\theta_j|$, because the objective is increasing in $t$, and $t= \epsilon \sum_{j=1}^d u_j= \epsilon\|\theta\|_1$ due to the minimization (Boyd & Vandenberghe, 2004, Section 4.1.3, p.130, Section 4.2.4 p.142). Since the $\log$ function is convex and nondecreasing, and $t$ is an affine function of $u$, the overall objective is convex in $\theta$ (Boyd & Vandenberghe, 2004, Section 4.2, p.136). Thus, the objective matches $l_{wc}(\theta)$

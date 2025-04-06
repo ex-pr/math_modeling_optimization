@@ -183,7 +183,7 @@ h(u) = -\log(1-u^2),\quad \mathbf{dom}(h) = \{u |\quad|u|&lt; 1 \}
 \min_{\mathbf{x}\in\mathbb{R}^n} \phi\left(A\mathbf{x}-\mathbf{b}\right),
 \]</span></p>
 <p>First, we’ll generate the data using the specified parameters and then implement each penalty function to analyze their effects.</p>
-<div id="0a231c80" class="cell" data-execution_count="1">
+<div id="2a07f498" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -195,7 +195,7 @@ h(u) = -\log(1-u^2),\quad \mathbf{dom}(h) = \{u |\quad|u|&lt; 1 \}
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.linalg <span class="im">import</span> norm</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="77e12cab" class="cell" data-execution_count="2">
+<div id="2cd04885" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Parameters</span></span>
@@ -244,7 +244,7 @@ h(u) = -\log(1-u^2),\quad \mathbf{dom}(h) = \{u |\quad|u|&lt; 1 \}
 <li><span class="math inline">\(\phi(\mathbf{y}) = \|y\|_2\)</span>, the standard Euclidean norm.</li>
 </ol>
 <p>This creates a distribution of residuals that is approximately Gaussian with a mean close to zero. The residuals are fairly evenly distributed, with few very large or very small values. This approach spreads the error quite evenly across all data points, not prioritizing any specific points to have zero error. The standard deviation of residuals is moderate compared to other methods.</p>
-<div id="c98fc0b2" class="cell" data-execution_count="3">
+<div id="dcde71cc" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Euclidean norm</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> solve_euc_norm():</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> cp.Variable(n)</span>
@@ -261,7 +261,7 @@ h(u) = -\log(1-u^2),\quad \mathbf{dom}(h) = \{u |\quad|u|&lt; 1 \}
 <li><span class="math inline">\(\phi(\mathbf{y}) = \|y\|_1\)</span>, the <span class="math inline">\(L_1\)</span> norm. This is often referred to as the Lasso.</li>
 </ol>
 <p>This produces a distribution with many more residuals that are exactly or very close to zero. The L1 norm is known for producing sparse solutions, and this extends to the residuals as well. The distribution has a characteristic peak at zero with long tails. This happens because the L1 norm puts equal weight on all residuals, which encourages some residuals to be exactly zero.</p>
-<div id="ee8d3283" class="cell" data-execution_count="4">
+<div id="fe6ddac5" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#L1 norm</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> solve_l1_norm():</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> cp.Variable(n)</span>
@@ -278,7 +278,7 @@ h(u) = -\log(1-u^2),\quad \mathbf{dom}(h) = \{u |\quad|u|&lt; 1 \}
 <li><span class="math inline">\(\phi(\mathbf{y}) = \sum_{k=1}^{m/2} |y_{r_k}|\)</span>, where <span class="math inline">\(r_k\)</span> is the index of the component with the <span class="math inline">\(k\)</span>th largest absolute value. This is like the Lasso, but where we only count the terms with their error in the top half, i.e.&nbsp;<span class="math inline">\(y_{r_1}\)</span> is the <span class="math inline">\(y\)</span> with largest absolute value, <span class="math inline">\(y_{r_2}\)</span> is the <span class="math inline">\(y\)</span> with second largest absolute value, etc.</li>
 </ol>
 <p>This produces a bimodal distribution with a clear distinction between the top half residuals (which are minimized) and the bottom half (which receive less attention). The bottom half of residuals (by magnitude) tend to be very small or zero, while the top half are more evenly distributed. This approach focuses on minimizing the largest errors while potentially allowing many small errors. While the problem statement suggests using norm_largest() (not available), the sum_largest() function with the absolute value of residuals correctly implements the Top Half L1 norm, which sums the k largest absolute values of the residuals.</p>
-<div id="15952425" class="cell" data-execution_count="5">
+<div id="98377ad7" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Top half L1 norm</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> solve_top_half_l1():</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> cp.Variable(n)</span>
@@ -302,7 +302,7 @@ M(2|u|-M),\, |u|\geq M,
 \end{cases}
 \]</span> For this problem use <span class="math inline">\(M=0.2\)</span>.</p>
 <p>The Huber penalty combines aspects of both L1 and L2 norms. For small residuals (&lt; M=0.2), it behaves like L2 (quadratic), resulting in a smooth Gaussian-like distribution near zero. For large residuals (&gt; M=0.2), it behaves like L1 (linear), leading to longer tails than pure L2. This creates a distribution that doesn’t have as many exact zeros as L1 but is less sensitive to outliers than L2.</p>
-<div id="9695ee76" class="cell" data-execution_count="6">
+<div id="081bbe7c" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Huber penalty</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> solve_huber():</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> cp.Variable(n)</span>
@@ -323,7 +323,7 @@ h(u) = -\log(1-u^2),\quad \mathbf{dom}(h) = \{u |\quad|u|&lt; 1 \}
 \]</span>.</li>
 </ol>
 <p>This creates a distribution that is strictly bounded (all residuals must have magnitude &lt; 1 due to the domain constraint). It strongly penalizes residuals as they approach the boundary of the domain. The distribution tends to have fewer extremely small residuals compared to L1 but more moderate-sized residuals. It prevents any residual from becoming too large, effectively creating a “barrier” at the bounds.</p>
-<div id="1196e226" class="cell" data-execution_count="7">
+<div id="1288c7d7" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Log-barrier penalty</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> solve_log_barrier():</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> cp.Variable(n)</span>
@@ -346,7 +346,7 @@ h(u) = -\log(1-u^2),\quad \mathbf{dom}(h) = \{u |\quad|u|&lt; 1 \}
 <p>L1 norm produces the sparsest residuals, with many values exactly zero. Euclidean norm distributes error more evenly, with fewer exact zeros. Top Half L1 creates a “selective sparsity” pattern focusing on the largest errors. Handling of Outliers: Euclidean norm is most sensitive to outliers, as large residuals are squared. L1 norm is more robust to outliers, as it weights all errors linearly. Huber provides a compromise, treating moderate outliers differently from extreme ones. Log-barrier completely prevents extreme outliers by enforcing strict bounds.</p>
 <p>Euclidean norm creates more Gaussian-like distributions. L1 creates more Laplacian-like distributions with sharper peaks at zero. Top Half L1 creates bimodal or multimodal distributions. Huber creates distributions with Gaussian centers and Laplacian tails. Log-barrier creates bounded distributions with density increasing toward the boundaries. The choice of penalty function should depend on the specific application and what kind of error distribution is most acceptable for that context.</p>
 <p>If having many exactly satisfied constraints is important, L1 norm is preferable. If overall error minimization is the goal without concern for individual constraints, Euclidean norm works well. If protection against outliers is needed, Huber or Log-barrier may be better choices. If focusing on the worst errors is the priority, Top Half L1 norm could be appropriate.</p>
-<div id="5efab531" class="cell" data-execution_count="8">
+<div id="7920c5f0" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the residual distributions</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>plot_residual_distribution(all_residuals)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -452,7 +452,7 @@ J = \sum_{i=1}^k \left(y_i - \mathbf{c}^T\mathbf{x}_i\right)^2
 <li><p>Explain how to find <span class="math inline">\(\mathbf{c}\)</span> (the model parameter) and <span class="math inline">\(y_{m+1} ,\cdots , y_k\)</span> (the censored data values) that minimize <span class="math inline">\(J\)</span>. Hint: should the censored data be variables or parameters?</p></li>
 <li><p>Carry out the method of part (a) on the data values in the file <a href="https://github.com/georgehagstrom/DATA609Spring2025/blob/main/website/assignments/labs/labData/censored_dict.json">censored_dict.json</a>. You can process this file in <code>R</code> using <code>fromJSON</code> in the <code>jsonlite</code> package or in python using the <code>json</code> library and:</p></li>
 </ol>
-<div id="5447a9ea" class="cell" data-execution_count="9">
+<div id="dbf801b8" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'censored_dict.json'</span>, <span class="st">'r'</span>) <span class="im">as</span> fp:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> json.load(fp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -487,12 +487,12 @@ J = \sum_{i=1}^m \left(y_i - \mathbf{c}^T\mathbf{x}_i\right)^2 + \sum_{i=m+1}^k 
 <li>Carry out the method of part (a) on the data values in the file censored_dict.json. Report <span class="math inline">\(\hat{\mathbf{c}}\)</span>, the value of <span class="math inline">\(\mathbf{c}\)</span> found using this method. Also find <span class="math inline">\(\hat{\mathbf{c}_{ls}}\)</span> , the least-squares estimate of <span class="math inline">\(\mathbf{c}\)</span> obtained by simply ignoring the censored data samples.</li>
 </ol>
 <p>In this problem the data are given in a JSON file with keys:</p>
-<p><strong>X</strong>: a list of K=100 samples (each sample is a 20 by 1 vector, with n=20), \</p>
-<p><strong>y</strong>: a list of M=25 uncensored response values (each is a scalar stored as a 1-element list), \</p>
-<p><span class="math inline">\(D\)</span>: the censoring lower bound (one-element list), \</p>
-<p><span class="math inline">\(c_{true}\)</span>: the true parameter vector (20 by 1 vector), \</p>
-<p><span class="math inline">\(n\)</span>: the number of features (20), \</p>
-<p><span class="math inline">\(K\)</span>: total number of samples (100), \</p>
+<p><strong>X</strong>: a list of K=100 samples (each sample is a 20 by 1 vector, with n=20),</p>
+<p><strong>y</strong>: a list of M=25 uncensored response values (each is a scalar stored as a 1-element list),</p>
+<p><span class="math inline">\(D\)</span>: the censoring lower bound (one-element list),</p>
+<p><span class="math inline">\(c_{true}\)</span>: the true parameter vector (20 by 1 vector),</p>
+<p><span class="math inline">\(n\)</span>: the number of features (20),</p>
+<p><span class="math inline">\(K\)</span>: total number of samples (100),</p>
 <p><span class="math inline">\(M\)</span>: number of uncensored samples (25).</p>
 <p>The idea is to re-order the data so that the first <span class="math inline">\(M\)</span> responses <span class="math inline">\(y_1 \ldots y_M\)</span> are observed (uncensored) and the remaining <span class="math inline">\(K-M\)</span> responses are censored, meaning we know only that the true response is at least <span class="math inline">\(D\)</span>.</p>
 <p>The code below loads the JSON file, extracts the data, splits <strong>X</strong> into the uncensored and censored parts, solves the joint problem for <span class="math inline">\(\hat{\mathbf{c}}\)</span> (and the imputed censored values), and also computes the least-squares estimate <span class="math inline">\(\hat{\mathbf{c}_{ls}}\)</span> using only the uncensored data. Finally, it reports the relative squared errors with respect to <span class="math inline">\(\mathbf{c}_{\mathrm{true}}\)</span>.</p>
@@ -511,7 +511,7 @@ J = \sum_{i=1}^m \left(y_i - \mathbf{c}^T\mathbf{x}_i\right)^2 + \sum_{i=m+1}^k 
 <p>In contrast, the least squares estimate using only the uncensored data produced a relative error of approximately 0.111.</p>
 <p>The plot below shows a parameter-by-parameter comparison using a bar chart. The joint estimation method (blue bars) produces values closer to the true parameters (green bars) than the least-squares method using only uncensored data (red bars). The difference is particularly pronounced for parameters like indices 0, 5, and 17, where the least-squares estimate shows substantial deviation from the true value. Another plot below presents scatter plots of both estimation methods against the true parameters. The diagonal line represents perfect estimation. The joint estimation method (left panel) shows points clustered much more tightly around this line compared to the least-squares method (right panel), which displays greater scatter and deviation. We can see the superior accuracy of the joint estimation approach, confirming our numerical finding that the relative error is reduced from 0.111 to 0.017 when properly accounting for censored data.</p>
 <p>This means that incorporating the censored data (by jointly estimating the imputed values) improves the accuracy of the parameter estimate significantly compared to using only the uncensored data. This result indicates that by jointly estimating the censored responses as decision variables, the model effectively leverages additional information from the censored data. In contrast, ignoring the censored data forces the estimation to rely solely on the uncensored subset, leading to a larger error.</p>
-<div id="37da44a5" class="cell" data-execution_count="10">
+<div id="d63e82ee" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load data</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'https://raw.githubusercontent.com/georgehagstrom/DATA609Spring2025/refs/heads/main/website/assignments/labs/labData/censored_dict.json'</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(url)</span>
@@ -674,12 +674,11 @@ l_{wc}(\theta) = \sum_{i=1}^n \sup_{\|\delta_i\|_{\infty}\leq\epsilon}\log\left(
 <p>This is a convex function of <span class="math inline">\(\theta\)</span> as it is a composition of the convex log-sum-exp function with an affine mapping (Boyd &amp; Vandenberghe, 2004, Section 3.1.5, p.&nbsp;75 and Section 3.2.4, p.&nbsp;84).</p>
 <p>To express this in DCP form, we need to handle the <span class="math inline">\(\ell_1\)</span> norm <span class="math inline">\(\|\theta\|_1 = \sum_{j=1}^d |\theta_j|\)</span> (which is convex). We introduce auxiliary variables to linearize the absolute values (Boyd &amp; Vandenberghe, 2004, Section 4.1.3, p.&nbsp;130): Variable <span class="math inline">\(t \in \mathbb{R}\)</span> to represent <span class="math inline">\(\epsilon\|\theta\|_1\)</span>; variables <span class="math inline">\(u_j \geq |\theta_j|\)</span> (Boyd &amp; Vandenberghe, 2004, Section 6.2.3, p.&nbsp;320).</p>
 <p>The problem becomes:</p>
-<p><span class="math display">\[\begin{align}
+<span class="math display">\[\begin{align}
 \text{minimize} \quad &amp; \sum_{i=1}^n \log\left(1+\exp\left(-y_i\theta^T\mathbf{x}_i + t\right)\right) \\
 \text{subject to} \quad &amp; t \geq \epsilon \sum_{j=1}^d u_j \\
-&amp; u_j \geq \theta_j, \ u_j \geq -\theta_j \quad j = 1, \ldots, d \\
-\end{align},
-\]</span></p>
+&amp; u_j \geq \theta_j, \ u_j \geq -\theta_j \quad j = 1, \ldots, d
+\end{align}\]</span>
 <p>where <span class="math inline">\(\theta \in \mathbb{R}^d\)</span>, <span class="math inline">\(t \in  \mathbb{R}\)</span>, <span class="math inline">\(u \in \mathbb{R}^d\)</span> are variables.</p>
 <p>This formulation is a sum of log-sum-exp terms, which are convex. The constraints are linear, hence convex (Boyd &amp; Vandenberghe, 2004, Section 4.2, p.&nbsp;136). At the optimum <span class="math inline">\(u_j = |\theta_j|\)</span>, because the objective is increasing in <span class="math inline">\(t\)</span>, and <span class="math inline">\(t= \epsilon \sum_{j=1}^d u_j= \epsilon\|\theta\|_1\)</span> due to the minimization (Boyd &amp; Vandenberghe, 2004, Section 4.1.3, p.130, Section 4.2.4 p.142). Since the <span class="math inline">\(\log\)</span> function is convex and nondecreasing, and <span class="math inline">\(t\)</span> is an affine function of <span class="math inline">\(u\)</span>, the overall objective is convex in <span class="math inline">\(\theta\)</span> (Boyd &amp; Vandenberghe, 2004, Section 4.2, p.136). Thus, the objective matches <span class="math inline">\(l_{wc}(\theta)\)</span></p>
 <p>The objective becomes exactly the worst-case logistic loss, it directly minimizes <span class="math inline">\(l_{wc}(\theta)\)</span> in a convex, DCP-compatible form, solving the robust logistic regression problem.</p>
@@ -694,7 +693,7 @@ l_{wc}(\theta) = \sum_{i=1}^n \sup_{\|\delta_i\|_{\infty}\leq\epsilon}\log\left(
 <p>The models disagree on 14 out of 60 test points (23.3% of the test data). Of these disagreement points, the robust model correctly classifies 13 points that the standard model misclassifies, while only 1 point is correctly classified by the standard model but misclassified by the robust model. This demonstrates that the robust model’s improved performance comes from its ability to handle challenging data points. Features 12, 25, 1, 30, and 31 have the highest standard deviation in these points. Feature 12 has the highest variability with a standard deviation of 1.456. This indicates that the robust model performs particularly well on data points with higher feature variability, which are precisely the cases where feature perturbations would have the most impact.</p>
 <p>The robust model’s parameters have much larger magnitudes compared to the standard model across all dimensions, as clearly shown in the parameter comparison visualization. This confirms that the robust model is making stronger predictions to overcome potential adversarial perturbations in the data. Robust optimization sometimes leads to solutions that appear to be “over-compensating” for potential perturbations (Boyd &amp; Vandenberghe, 2004, Section 6.4.2). The robust model is making stronger predictions to ensure that even with feature perturbations of magnitude epsilon, the correct classification is maintained.</p>
 <p>The robust logistic regression approach outperforms standard logistic regression on this dataset by explicitly accounting for potential variations in the feature vectors. The performance improvement comes at the cost of a model with larger parameter values, which is a reasonable trade-off when dealing with data that may contain uncertainty or noise in the feature measurements. This approach would be particularly valuable in applications where feature perturbations are likely or where the cost of misclassification is high.</p>
-<div id="0b1f64a3" class="cell" data-execution_count="11">
+<div id="26b08257" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load dataset from Github</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>train_df <span class="op">=</span> pd.read_csv(<span class="st">'https://media.githubusercontent.com/media/georgehagstrom/DATA609Spring2025/refs/heads/main/website/assignments/labs/labData/rob_regression.csv'</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> pd.read_csv(<span class="st">'https://media.githubusercontent.com/media/georgehagstrom/DATA609Spring2025/refs/heads/main/website/assignments/labs/labData/rob_regression_test.csv'</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
@@ -797,11 +796,11 @@ Data columns (total 41 columns):
 dtypes: float64(41)
 memory usage: 19.7 KB</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="71">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>(None, None)</code></pre>
 </div>
 </div>
-<div id="0fe429e9" class="cell" data-execution_count="12">
+<div id="d122e681" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract features X and target y</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> train_df[<span class="st">'y'</span>].values</span>
@@ -899,25 +898,25 @@ memory usage: 19.7 KB</code></pre>
                                      CVXPY                                     
                                      v1.6.2                                    
 ===============================================================================
-(CVXPY) Apr 06 03:39:01 PM: Your problem has 81 variables, 81 constraints, and 0 parameters.
-(CVXPY) Apr 06 03:39:01 PM: It is compliant with the following grammars: DCP, DQCP
-(CVXPY) Apr 06 03:39:01 PM: (If you need to solve this problem multiple times, but with different data, consider using parameters.)
-(CVXPY) Apr 06 03:39:01 PM: CVXPY will first compile your problem; then, it will invoke a numerical solver to obtain a solution.
-(CVXPY) Apr 06 03:39:01 PM: Your problem is compiled with the CPP canonicalization backend.
+(CVXPY) Apr 06 07:53:56 PM: Your problem has 81 variables, 81 constraints, and 0 parameters.
+(CVXPY) Apr 06 07:53:56 PM: It is compliant with the following grammars: DCP, DQCP
+(CVXPY) Apr 06 07:53:56 PM: (If you need to solve this problem multiple times, but with different data, consider using parameters.)
+(CVXPY) Apr 06 07:53:56 PM: CVXPY will first compile your problem; then, it will invoke a numerical solver to obtain a solution.
+(CVXPY) Apr 06 07:53:56 PM: Your problem is compiled with the CPP canonicalization backend.
 -------------------------------------------------------------------------------
                                   Compilation                                  
 -------------------------------------------------------------------------------
-(CVXPY) Apr 06 03:39:01 PM: Compiling problem (target solver=CLARABEL).
-(CVXPY) Apr 06 03:39:01 PM: Reduction chain: Dcp2Cone -&gt; CvxAttr2Constr -&gt; ConeMatrixStuffing -&gt; CLARABEL
-(CVXPY) Apr 06 03:39:01 PM: Applying reduction Dcp2Cone
-(CVXPY) Apr 06 03:39:01 PM: Applying reduction CvxAttr2Constr
-(CVXPY) Apr 06 03:39:01 PM: Applying reduction ConeMatrixStuffing
-(CVXPY) Apr 06 03:39:01 PM: Applying reduction CLARABEL
-(CVXPY) Apr 06 03:39:01 PM: Finished problem compilation (took 1.128e-01 seconds).
+(CVXPY) Apr 06 07:53:56 PM: Compiling problem (target solver=CLARABEL).
+(CVXPY) Apr 06 07:53:56 PM: Reduction chain: Dcp2Cone -&gt; CvxAttr2Constr -&gt; ConeMatrixStuffing -&gt; CLARABEL
+(CVXPY) Apr 06 07:53:56 PM: Applying reduction Dcp2Cone
+(CVXPY) Apr 06 07:53:56 PM: Applying reduction CvxAttr2Constr
+(CVXPY) Apr 06 07:53:56 PM: Applying reduction ConeMatrixStuffing
+(CVXPY) Apr 06 07:53:56 PM: Applying reduction CLARABEL
+(CVXPY) Apr 06 07:53:56 PM: Finished problem compilation (took 1.351e-01 seconds).
 -------------------------------------------------------------------------------
                                 Numerical solver                               
 -------------------------------------------------------------------------------
-(CVXPY) Apr 06 03:39:01 PM: Invoking solver CLARABEL  to obtain a solution.
+(CVXPY) Apr 06 07:53:56 PM: Invoking solver CLARABEL  to obtain a solution.
 -------------------------------------------------------------
            Clarabel.rs v0.10.0  -  Clever Acronym                
 
@@ -983,14 +982,14 @@ iter    pcost        dcost       gap       pres      dres      k/t        μ    
  32  +1.0394e-05  +1.0389e-05  5.08e-09  4.89e-13  1.23e-11  3.85e-08  2.88e-12  5.07e-01  
 ---------------------------------------------------------------------------------------------
 Terminated with status = Solved
-solve time = 9.5677ms
+solve time = 15.1459ms
 -------------------------------------------------------------------------------
                                     Summary                                    
 -------------------------------------------------------------------------------
-(CVXPY) Apr 06 03:39:01 PM: Problem status: optimal
-(CVXPY) Apr 06 03:39:01 PM: Optimal value: 2.116e-07
-(CVXPY) Apr 06 03:39:01 PM: Compilation took 1.128e-01 seconds
-(CVXPY) Apr 06 03:39:01 PM: Solver (including time spent in interface) took 1.145e-02 seconds
+(CVXPY) Apr 06 07:53:56 PM: Problem status: optimal
+(CVXPY) Apr 06 07:53:56 PM: Optimal value: 2.116e-07
+(CVXPY) Apr 06 07:53:56 PM: Compilation took 1.351e-01 seconds
+(CVXPY) Apr 06 07:53:56 PM: Solver (including time spent in interface) took 1.813e-02 seconds
 Standard logistic regression error rate: 0.400
 Robust logistic regression error rate: 0.200
 L1 norm, standard model: 311.820
