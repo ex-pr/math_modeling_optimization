@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Daria Dubovskaia">
+
+<title>Homework 6: Applications to Stats and Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Applications_Statistics_Machine_Learning_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Applications_Statistics_Machine_Learning_files/libs/quarto-html/quarto.js"></script>
+<script src="Applications_Statistics_Machine_Learning_files/libs/quarto-html/popper.min.js"></script>
+<script src="Applications_Statistics_Machine_Learning_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Applications_Statistics_Machine_Learning_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Applications_Statistics_Machine_Learning_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Applications_Statistics_Machine_Learning_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Applications_Statistics_Machine_Learning_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Applications_Statistics_Machine_Learning_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Applications_Statistics_Machine_Learning_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Homework 6: Applications to Stats and Machine Learning</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Daria Dubovskaia </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="problem-1-multi-label-support-vector-machine-cvx-additional-exercises-6.18" class="level2">
+<h2 class="anchored" data-anchor-id="problem-1-multi-label-support-vector-machine-cvx-additional-exercises-6.18">Problem 1: Multi-Label Support Vector Machine (CVX Additional Exercises 6.18)</h2>
+<p>The basic SVM described in chapter 8 of the book is used for classification of data with two labels. In this problem we explore an extension of SVM that can be used to carry out classification of data with more than two labels. Our data consists of pairs: <span class="math inline">\((\mathbf{x}_i , y_i ) \in \mathbf{R}^n \times
+\{1, \dots , K\},\, i = 1, \dots , m\)</span>, where <span class="math inline">\(\mathbf{x}_i\)</span> is the feature vector and <span class="math inline">\(y_i\)</span> is the label of the <span class="math inline">\(i\)</span>th data point. (So the labels can take the values <span class="math inline">\(1, \dots , K\)</span>.) Our classifier will use <span class="math inline">\(K\)</span> affine functions, <span class="math inline">\(f_k(\mathbf{x}) = \mathbf{a}^T_k \mathbf{x} + \mathbf{b}_k\)</span> , <span class="math inline">\(k = 1, . . . , K\)</span>, which we also collect into affine function from <span class="math inline">\(\mathbb{R}^n\)</span> into <span class="math inline">\(\mathbb{R}^K\)</span> as <span class="math inline">\(f(\mathbf{x}) = A\mathbf{x} + \mathbf{b}\)</span>. (The rows of <span class="math inline">\(A\)</span> are <span class="math inline">\(\mathbf{a}^T_k\)</span> .) Given the feature vector <span class="math inline">\(\mathbf{x}\)</span>, our model predicts the label <span class="math inline">\(\hat{y} = \mathrm{argmax}_k f_k (\mathbf{x})\)</span>, i.e.&nbsp;the predicted label is given by the index of the largest value of the <span class="math inline">\(f_k\)</span> functions evaluated at the data point. We assume that exact ties never occur, or if they do, an arbitrary choice can be made. Note that if a multiple of 1 is added to <span class="math inline">\(\mathbf{b}\)</span>, the classifier does not change. Thus, without loss of generality, we can assume that <span class="math inline">\(\mathbf{1}^T \mathbf{b} = 0\)</span>.</p>
+<p>To correctly classify all the data examples perfectly, we would need <span class="math inline">\(f_{y_i} (\mathbf{x}_i ) &gt; \mathrm{max}_{k\neq y_i} f_k (\mathbf{x}_i )\)</span> for all <span class="math inline">\(i\)</span>. This set of inequalities in <span class="math inline">\(a_k\)</span> and <span class="math inline">\(b_k\)</span>, are feasible if and only if the set of inequalities <span class="math inline">\(f_{y_i} (\mathbf{x}_i ) \geq 1 + \mathrm{max}_{k\neq y_i} f_k (\mathbf{x}_i )\)</span> are feasible. This motivates the loss function:</p>
+<p><span class="math display">\[
+L(A, \mathbf{b}) = \sum_{i=1}^m\left(1 + \mathrm{max}_{k \neq y_i}f_k(\mathbf{x}_i) - f_{y_i}(\mathbf{x}_i)  \right)_+
+\]</span> where <span class="math inline">\((u)_+ = \mathrm{max}\{u, 0\}\)</span>. The multi-label SVM chooses <span class="math inline">\(A\)</span> and <span class="math inline">\(\mathbf{b}\)</span> to minimize <span class="math inline">\(L(A, b) + \mu\|A\|_F^2,\)</span> subject to <span class="math inline">\(\mathbf{1}^T \mathbf{b} = 0\)</span>, where <span class="math inline">\(\mu &gt; 0\)</span> is a regularization parameter. (Several variations on this are possible, such as regularizing b as well, or replacing the Frobenius norm squared with the sum of norms of the columns of A.). The Frobenius norm is a generalization of the <span class="math inline">\(2\)</span>-norm from vectors to matrices, it is defined as <span class="math inline">\(\|A\|_F = \left(\sum_{ij} A_{ij}^2\right)^{1/2}\)</span> and implemented in <code>CVX</code> using <code>norm(A,'fro')</code>.</p>
+<ol type="a">
+<li><p>Show how to find <span class="math inline">\(A\)</span> and <span class="math inline">\(\mathbf{b}\)</span> using convex optimization. Be sure to justify any changes of variables or reformulation (if needed), and convexity of the objective and constraints in your formulation.</p></li>
+<li><p>Carry out multi-label SVM on the data given in <a href="https://github.com/georgehagstrom/DATA609Spring2025/blob/main/website/assignments/labs/labData/multi_label_svm_data.csv">multi_label_svm_data.csv</a>. Use the data given in <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(y\)</span> to fit the SVM model, for a range of values of <span class="math inline">\(\mu\)</span>. Use the data given in <a href="https://github.com/georgehagstrom/DATA609Spring2025/blob/main/website/assignments/labs/labData/multi_label_svm_test.csv">multi_label_svm_test.csv</a> to test the SVM models. Plot the test set classification error rate (i.e., the fraction of data examples in the test set for which <span class="math inline">\(\hat{y} \neq y\)</span>) versus <span class="math inline">\(\mu\)</span>.</p></li>
+</ol>
+<p>You don’t need to try more than 10 or 20 values of <span class="math inline">\(\mu\)</span>, and we suggest choosing them uniformly on a <code>log</code> scale, from (say) <span class="math inline">\(10^{−2}\)</span> to <span class="math inline">\(10^2\)</span> .</p>
+<p><strong>Solution:</strong></p>
+<ol type="a">
+<li>First, the objective function to minimize:</li>
+</ol>
+<p><span class="math display">\[L(A, \mathbf{b}) + \mu\|A\|_F^2 = \sum_{i=1}^m\left(1 + \mathrm{max}_{k \neq y_i}f_k(\mathbf{x}_i) - f_{y_i}(\mathbf{x}_i)  \right)_+ + \mu\|A\|_F^2\]</span></p>
+<p>Subject to the constraint <span class="math inline">\(\mathbf{1}^T \mathbf{b} = 0\)</span>, <span class="math inline">\(\mu &gt; 0\)</span> is a regularization parameter.</p>
+<p>To make this a convex optimization problem, let’s use slack variables (Boyd &amp; Vandenberghe, Section 8.6.1, p.&nbsp;425):</p>
+<p><span class="math inline">\(u_i \geq 0\)</span> for <span class="math inline">\(i = 1,...,m\)</span>, slack variables that measure the classification error: <span class="math inline">\(u_i \geq 1 + \max_{k \neq y_i} f_k(\mathbf{x}_i) - f_{y_i}(\mathbf{x}_i),\)</span></p>
+<p><span class="math inline">\(u_i\)</span> will be at least equal to the loss for data point <span class="math inline">\(i\)</span>, when we minimize <span class="math inline">\(u_i\)</span> in the objective function, it will exactly equal the loss when the loss is positive (otherwise it will be zero).</p>
+<p>To handle the <span class="math inline">\(\mathrm{max}\)</span> function, we will use (the point-wise maximum of affine functions is convex, we take its epigraph, the resulting inequalities are convex, Boyd &amp; Vandenberghe, Section 3.1, p.&nbsp;73): <span class="math inline">\(\max_{k \neq y_i} f_k(\mathbf{x}_i) \geq f_k(\mathbf{x}_i) \ \text{for all } k \neq y_i.\)</span></p>
+<p>With these substitutions, we get: <span class="math display">\[\begin{array}{ll}
+\text{minimize} &amp; \sum_{i=1}^m u_i + \mu\|A\|_F^2 \\
+\text{subject to} &amp; u_i \geq 1 + f_k(\mathbf{x}_i) - f_{y_i}(\mathbf{x}_i),
+\text{for all } k \neq y_i,  i=1,...,m\\
+&amp; u_i \geq 0, \ i=1,...,m\\
+&amp; \mathbf{1}^T \mathbf{b} = 0.
+\end{array}\]</span></p>
+<p>Substituting the definition of <span class="math inline">\(f_k(\mathbf{x}_i) = \mathbf{a}_k^T \mathbf{x}_i + b_k\)</span>:</p>
+<p><span class="math display">\[\begin{array}{ll}
+\text{minimize} &amp; \sum_{i=1}^m u_i + \mu\|A\|_F^2 \\
+\text{subject to} &amp; u_i \geq 1 + \mathbf{a}_k^T \mathbf{x}_i + b_k - (\mathbf{a}_{y_i}^T \mathbf{x}_i + b_{y_i}), \text{for all } k \neq y_i, \ i=1,...,m\\
+&amp; u_i \geq 0, \ i=1,...,m\\
+&amp; \mathbf{1}^T \mathbf{b} = 0
+\end{array},\]</span></p>
+<p>we minimize over the variables <span class="math inline">\(A \in \mathbb{R}^{K \times n},\mathbf{b} \in \mathbb{R}^K, u \in \mathbb{R}_+^m\)</span>. Now we have a convex optimization problem: The objective <span class="math inline">\(\sum_{i=1}^m u_i + \mu\|A\|_F^2\)</span> is convex since it’s a sum of a linear term and a quadratic norm, and the constraints are all linear, so we’re dealing with a convex optimization problem. All constraints are linear inequalities or equalities, they are all convex. The domain of the problem is convex.</p>
+<ol start="2" type="a">
+<li>We trained multi-label SVM model for 15 different values of the regularization parameter <span class="math inline">\(\mu\)</span> (10^-2 to 10^2, log scale). From the resulting plot of the test error rates against the corresponding <span class="math inline">\(\mu\)</span> values:</li>
+</ol>
+<ul>
+<li><p>The lowest test error rate is 0.09 (9% misclassification) for <span class="math inline">\(\mu\)</span> = 0.0373 which suggests a good balance between fitting the data and keeping the model simple.</p></li>
+<li><p>For small values <span class="math inline">\(\mu &lt; 0.1\)</span>, the test error remains low, which makes sense since less regularization allows the model to fit the training data more closely. For <span class="math inline">\(\mu\)</span> from 0.1 to 100, there is an upward trend in the error rate, reaching 0.32 (32%) for <span class="math inline">\(\mu\)</span> = 100.</p></li>
+<li><p>The non-monotonic behavior in the mid-range suggests that this dataset might have some underlying complexity, perhaps class imbalances or noisy labels, that affects the regularization’s impact.</p></li>
+<li><p>The sharp rise for values <span class="math inline">\(\mu &gt; 10\)</span> indicates underfitting, likely because the model prioritizes minimizing <span class="math inline">\(\|A\|_F^2\)</span> over the hinge loss.</p></li>
+</ul>
+<p>This reflects the bias-variance tradeoff in machine learning: too little regularization (small <span class="math inline">\(\mu\)</span>) might lead to overfitting, while too much regularization (large <span class="math inline">\(\mu\)</span>) leads to underfitting. For this particular dataset, a relatively small amount of regularization (<span class="math inline">\(\mu\)</span> about 0.0373) would give the best test performance, suggesting that the problem might benefit more from accurate classification boundaries than from extremely simple models.</p>
+<div id="2f4e561e" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cvxpy <span class="im">as</span> cp</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> minimize</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> log_ndtr</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> linprog</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="19593182" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load dataset from Github</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>train_df <span class="op">=</span> pd.read_csv(<span class="st">'https://media.githubusercontent.com/media/georgehagstrom/DATA609Spring2025/refs/heads/main/website/assignments/labs/labData/multi_label_svm_data.csv'</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> pd.read_csv(<span class="st">'https://media.githubusercontent.com/media/georgehagstrom/DATA609Spring2025/refs/heads/main/website/assignments/labs/labData/multi_label_svm_test.csv'</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>train_df.info(), train_df.head(), test_df.info(), test_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 1000 entries, 0 to 999
+Data columns (total 21 columns):
+ #   Column  Non-Null Count  Dtype  
+---  ------  --------------  -----  
+ 0   y       1000 non-null   int64  
+ 1   x_1     1000 non-null   float64
+ 2   x_2     1000 non-null   float64
+ 3   x_3     1000 non-null   float64
+ 4   x_4     1000 non-null   float64
+ 5   x_5     1000 non-null   float64
+ 6   x_6     1000 non-null   float64
+ 7   x_7     1000 non-null   float64
+ 8   x_8     1000 non-null   float64
+ 9   x_9     1000 non-null   float64
+ 10  x_10    1000 non-null   float64
+ 11  x_11    1000 non-null   float64
+ 12  x_12    1000 non-null   float64
+ 13  x_13    1000 non-null   float64
+ 14  x_14    1000 non-null   float64
+ 15  x_15    1000 non-null   float64
+ 16  x_16    1000 non-null   float64
+ 17  x_17    1000 non-null   float64
+ 18  x_18    1000 non-null   float64
+ 19  x_19    1000 non-null   float64
+ 20  x_20    1000 non-null   float64
+dtypes: float64(20), int64(1)
+memory usage: 164.2 KB
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 100 entries, 0 to 99
+Data columns (total 21 columns):
+ #   Column  Non-Null Count  Dtype  
+---  ------  --------------  -----  
+ 0   y       100 non-null    int64  
+ 1   x_1     100 non-null    float64
+ 2   x_2     100 non-null    float64
+ 3   x_3     100 non-null    float64
+ 4   x_4     100 non-null    float64
+ 5   x_5     100 non-null    float64
+ 6   x_6     100 non-null    float64
+ 7   x_7     100 non-null    float64
+ 8   x_8     100 non-null    float64
+ 9   x_9     100 non-null    float64
+ 10  x_10    100 non-null    float64
+ 11  x_11    100 non-null    float64
+ 12  x_12    100 non-null    float64
+ 13  x_13    100 non-null    float64
+ 14  x_14    100 non-null    float64
+ 15  x_15    100 non-null    float64
+ 16  x_16    100 non-null    float64
+ 17  x_17    100 non-null    float64
+ 18  x_18    100 non-null    float64
+ 19  x_19    100 non-null    float64
+ 20  x_20    100 non-null    float64
+dtypes: float64(20), int64(1)
+memory usage: 16.5 KB</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>(None,
+    y       x_1       x_2       x_3       x_4       x_5       x_6       x_7  \
+ 0  5  2.353735 -0.478736 -0.592099  0.023837 -0.024048 -0.272177  0.447972   
+ 1  1 -1.382124  0.159286 -0.202440 -0.540771  2.059277 -1.087112 -0.596151   
+ 2  2 -0.651782 -1.783008  0.347985 -0.389052  0.576092  0.570920  0.497190   
+ 3  6 -0.723374  0.940889  0.446384  0.063251 -0.220595  0.223281  1.090534   
+ 4  9  0.171802 -0.064620 -0.363568 -1.062481  0.012635 -1.002169 -0.888538   
+ 
+         x_8       x_9  ...      x_11      x_12      x_13      x_14      x_15  \
+ 0  1.325046 -0.964918  ...  0.236415  1.010687 -1.202464 -0.245103 -1.048232   
+ 1  0.245661 -1.901101  ... -1.019503 -0.393748 -0.710958  0.321024  0.327958   
+ 2  0.351553  0.645305  ... -0.529658 -0.436789  0.515800 -0.303118  0.753293   
+ 3 -0.380058 -0.996469  ...  0.395668 -0.489847 -0.904752  0.400731 -0.824837   
+ 4 -1.723833  1.196805  ... -0.645432  1.882295  0.373182  0.751067  0.058708   
+ 
+        x_16      x_17      x_18      x_19      x_20  
+ 0  0.529387 -0.451083 -0.467394  0.188276  1.844455  
+ 1  1.484918 -0.543751  1.557794 -0.371094 -2.511452  
+ 2  1.858992 -0.548940 -0.728178 -0.610301 -0.291230  
+ 3  0.227120  0.235648  1.500386 -1.077280  0.900209  
+ 4  0.264528 -0.070219  0.247230  0.738454  0.209664  
+ 
+ [5 rows x 21 columns],
+ None,
+    y       x_1       x_2       x_3       x_4       x_5       x_6       x_7  \
+ 0  6 -1.364363  0.811495 -0.885825  0.639146  0.041804  0.159498  2.372869   
+ 1  6 -2.327146  0.110677  1.276138 -0.216434  0.969746 -0.743092 -2.929145   
+ 2  3 -0.370774 -0.031315 -1.809557  0.276272 -0.467050  3.075171  0.318851   
+ 3  9  1.103660  0.714543 -0.557662  0.610224  1.361881 -0.228119  2.005003   
+ 4  9 -1.328435  0.878055 -0.340729  0.012184  0.160199  1.677741  0.567337   
+ 
+         x_8       x_9  ...      x_11      x_12      x_13      x_14      x_15  \
+ 0 -0.360251 -0.537212  ...  0.345180  0.202062  0.486412 -0.803928 -0.409275   
+ 1 -0.697400  0.084518  ... -0.098194  0.358340  0.901581 -0.358413 -0.474178   
+ 2  0.263286  0.153005  ... -0.024818 -0.040743  0.483382  1.979338  0.138654   
+ 3 -1.620725 -1.075171  ... -0.305208 -0.462422 -1.674457  1.576776  1.971461   
+ 4 -0.636215 -0.876492  ...  0.227340 -0.519103 -1.311809 -1.267488  1.481496   
+ 
+        x_16      x_17      x_18      x_19      x_20  
+ 0  1.606025  0.074906 -0.602817  0.430000 -0.644297  
+ 1  0.517675 -0.268408  0.712170 -1.222557  1.463392  
+ 2  0.537209  0.114697  1.278991 -0.653095  0.532934  
+ 3 -0.691307  0.671845 -1.365993  0.524228 -1.102419  
+ 4 -0.954089 -0.344609 -0.519050 -1.353826  0.697713  
+ 
+ [5 rows x 21 columns])</code></pre>
+</div>
+</div>
+<div id="339a2fd3" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split features and labels, -1 to get zero-based labels</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> train_df.drop(columns<span class="op">=</span><span class="st">'y'</span>).values</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> train_df[<span class="st">'y'</span>].astype(<span class="bu">int</span>).values <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> test_df.drop(columns<span class="op">=</span><span class="st">'y'</span>).values</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> test_df[<span class="st">'y'</span>].astype(<span class="bu">int</span>).values <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler().fit(X_train)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>X_train_scaled <span class="op">=</span> scaler.transform(X_train)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>X_test_scaled  <span class="op">=</span> scaler.transform(X_test)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Dimensions, Number of classes, mu values</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>m_train, n_train <span class="op">=</span> X_train_scaled.shape</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> <span class="bu">len</span>(np.unique(y_train))</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>mu_values <span class="op">=</span> np.logspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">15</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>error_rates <span class="op">=</span> []</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#Go through mu values</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> mu <span class="kw">in</span> mu_values:</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Training with mu = </span><span class="sc">{</span>mu<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Variables</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    A <span class="op">=</span> cp.Variable((K, n_train))</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> cp.Variable(K)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    u <span class="op">=</span> cp.Variable(m_train, pos<span class="op">=</span><span class="va">True</span>)  <span class="co">#Nonnegativity constraint</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    constraints <span class="op">=</span> [cp.<span class="bu">sum</span>(b) <span class="op">==</span> <span class="dv">0</span>]  <span class="co">#Zero-sum constraint</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Constraints for each sample</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(m_train):</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        yi <span class="op">=</span> y_train[i]</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        xi <span class="op">=</span> X_train_scaled[i]</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(K):</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> k <span class="op">!=</span> yi:</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>                <span class="co">#Constraint u_i</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>                constraints.append(</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>                    u[i] <span class="op">&gt;=</span> <span class="dv">1</span> <span class="op">+</span> A[k] <span class="op">@</span> xi <span class="op">+</span> b[k] <span class="op">-</span> (A[yi] <span class="op">@</span> xi <span class="op">+</span> b[yi])</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Objective function</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    objective <span class="op">=</span> cp.Minimize(cp.<span class="bu">sum</span>(u) <span class="op">+</span> mu <span class="op">*</span> cp.norm(A, <span class="st">'fro'</span>)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Solve problem</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    prob <span class="op">=</span> cp.Problem(objective, constraints)</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>    prob.solve(verbose<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Predict on test set</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> X_test_scaled <span class="op">@</span> A.value.T <span class="op">+</span> b.value</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> np.argmax(scores, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Error rate</span></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>    error_rate <span class="op">=</span> np.mean(y_pred <span class="op">!=</span> y_test)</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>    error_rates.append(error_rate)</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Test error rate: </span><span class="sc">{</span>error_rate<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="co">#Best mu</span></span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>best_mu_index <span class="op">=</span> np.argmin(error_rates)</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>best_mu <span class="op">=</span> mu_values[best_mu_index]</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>best_error_rate <span class="op">=</span> error_rates[best_mu_index]</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Best regularization parameter: </span><span class="sc">{</span>best_mu<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Best test error rate: </span><span class="sc">{</span>best_error_rate<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot results</span></span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>plt.semilogx(mu_values, error_rates, <span class="st">'o-'</span>)</span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Regularization parameter'</span>)</span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Test error rate'</span>)</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Multi-Label SVM Test error rate vs Regularization parameter'</span>)</span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Training with mu = 0.0100
+Test error rate: 0.100
+Training with mu = 0.0193
+Test error rate: 0.100
+Training with mu = 0.0373
+Test error rate: 0.090
+Training with mu = 0.0720
+Test error rate: 0.110
+Training with mu = 0.1389
+Test error rate: 0.120
+Training with mu = 0.2683
+Test error rate: 0.110
+Training with mu = 0.5179
+Test error rate: 0.110
+Training with mu = 1.0000
+Test error rate: 0.110
+Training with mu = 1.9307
+Test error rate: 0.100
+Training with mu = 3.7276
+Test error rate: 0.180
+Training with mu = 7.1969
+Test error rate: 0.180
+Training with mu = 13.8950
+Test error rate: 0.210
+Training with mu = 26.8270
+Test error rate: 0.200
+Training with mu = 51.7947
+Test error rate: 0.260
+Training with mu = 100.0000
+Test error rate: 0.320
+
+Best regularization parameter: 0.0373
+Best test error rate: 0.09</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Applications_Statistics_Machine_Learning_files/figure-html/cell-4-output-2.png" width="672" height="377" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-2-maximum-likelihood-prediction-of-team-abilities-adapted-from-exercise-7.4-in-convex-optimization-extended-exercises" class="level2">
+<h2 class="anchored" data-anchor-id="problem-2-maximum-likelihood-prediction-of-team-abilities-adapted-from-exercise-7.4-in-convex-optimization-extended-exercises">Problem 2: Maximum Likelihood Prediction of Team Abilities (Adapted from Exercise 7.4 in Convex Optimization Extended Exercises)</h2>
+<p>A set of <span class="math inline">\(n\)</span> teams compete in a tournament. We model each team’s ability by a number <span class="math inline">\(a_j,\, j = 1, \cdots , n\)</span>. When teams <span class="math inline">\(j\)</span> and <span class="math inline">\(k\)</span> play each other, the probability that team <span class="math inline">\(j\)</span> wins is equal to:</p>
+<p><span class="math display">\[
+\mathrm{prob}(a_j − a_k + v &gt; 0)
+\]</span></p>
+<p>where <span class="math inline">\(v \sim \mathrm{Normal}(0, \sigma^2 )\)</span>. This means we can also write the probability as <span class="math inline">\(p(\mathrm{i\,\, beats \,\, j}) =  = \Phi\left(\frac{a_j-a_k}{\sigma}\right)\)</span>, where <span class="math inline">\(\Phi\)</span> is the cumulative distribution function of the standard normal distribution.</p>
+<p>You are given the outcome of <span class="math inline">\(m\)</span> past games. These are organized as in a game incidence matrix <span class="math inline">\(A\)</span>, where the <span class="math inline">\(l\)</span>th row of <span class="math inline">\(A\)</span> corresponds to game <span class="math inline">\(l\)</span> and where:</p>
+<p><span class="math display">\[
+A_{il} = \begin{cases} 1 \quad &amp;\mathrm{if\,\,team\,\, i\,\, played\,\, in\,\, game\,\, l\,\, and\,\, won}  \\
+-1 \quad &amp;\mathrm{if\,\, team\,\, i\,\, played\,\, in\,\, game\,\, l\,\, and\,\, lost} l = k^{(i)} \\
+0 \quad &amp;\mathrm{otherwise}
+\end{cases},
+\]</span> This means that each row of <span class="math inline">\(A\)</span> has exactly two non-zero entries, with a <span class="math inline">\(1\)</span> in the column of the team that played and won, and a <span class="math inline">\(-1\)</span> in the column of the team that played and lost.</p>
+<ol type="a">
+<li><p>Formulate the problem of finding the maximum likelihood estimate of team abilities, <span class="math inline">\(\hat{a} \in \mathbb{R}^n\)</span>, given the outcomes, as a convex optimization problem. Because the optimal solution can be shifted by a constant, you should specify a prior constraint on the first variable <span class="math inline">\(\hat{a}_0 = 0\)</span>. In order to keep the estimates bounded, an additional set of prior constraints <span class="math inline">\(\hat{a}_i \in [-3, 3]\)</span> should be included in the problem formulation, and you should take <span class="math inline">\(\sigma = 0.25\)</span> to be a constant value rather than a variable. Also, we note that if a constant is added to all team abilities, there is no change in the probabilities of game outcomes. This means that <span class="math inline">\(\hat{a}\)</span> is determined only up to a constant, like a potential. But this doesn’t affect the ML estimation problem, or any subsequent predictions made using the estimated parameters.</p></li>
+<li><p>Find <span class="math inline">\(\hat{a}\)</span> for the team data by the game incidence matrix <a href="https://github.com/georgehagstrom/DATA609Spring2025/blob/main/website/assignments/labs/labData/AMat_train.csv">AMat_train.csv</a>. (This matrix gives the outcomes for a tournament in which each team plays each other team once.) You may find the CVX function <code>log_normcdf</code> helpful for this problem. Remember that the cumulative distribution function of a log-concave distribution is log-concave, and also that it is vectorized. Hint: the <span class="math inline">\(l\)</span>th row of <span class="math inline">\(A\mathrm{a} =
+a_{\mathrm{win},l}-a_{\mathrm{lose},l}\)</span>.</p></li>
+<li><p>Use the maximum likelihood estimate <span class="math inline">\(\hat{a}\)</span> found in part (b) to predict the outcomes of next year’s tournament games, given in the file <a href="https://github.com/georgehagstrom/DATA609Spring2025/blob/main/website/assignments/labs/labData/team_data_test.csv">team_data_test.csv</a>, using <span class="math display">\[
+\hat{y}^{(i)} = \mathrm{sign}(\hat{a}_{j^{(i)}} − \hat{a}_{k^{(i)}})
+\]</span></p></li>
+</ol>
+<p>The first two rows of this file contain the indices of the two teams playing, and the third column is <span class="math inline">\(1\)</span> if the first team won and <span class="math inline">\(-1\)</span> otherwise. Compare the predictions predictions based on <span class="math inline">\(\hat{a}\)</span> with the actual outcomes, given in the third column of test. Give the fraction of correctly predicted outcomes. The games played in train and test are the same, so another, simpler method for predicting the outcomes in test it to just assume the team that won last year’s match will also win this year’s match. You can find a similarly structured matrix in the file <a href="https://github.com/georgehagstrom/DATA609Spring2025/blob/main/website/assignments/labs/labData/team_data_test.csv">team_data_test.csv</a>, or you can construct it from the game incidence matrix. Give the percentage of correctly predicted outcomes using this simple method.</p>
+<p><strong>Solution:</strong></p>
+<ol type="a">
+<li>This is a parameter estimation problem (Boyd &amp; Vandenberghe, 2004, Section 7.1). We have:</li>
+</ol>
+<ul>
+<li><p>n teams with abilities <span class="math inline">\(a_0, a_1, ..., a_{n-1}\)</span></p></li>
+<li><p>When team j plays team k, the probability that j wins is <span class="math inline">\(\Phi\left(\frac{a_j-a_k}{\sigma}\right)\)</span></p></li>
+<li><p>Game outcomes are recorded in matrix A where rows represent games and columns represent teams</p></li>
+<li><p><span class="math inline">\(\sigma = 0.25\)</span> (fixed)</p></li>
+<li><p>The first team’s ability is constrained: <span class="math inline">\(a_0 = 0\)</span></p></li>
+<li><p>All abilities are bounded: <span class="math inline">\(a_i \in [-3, 3]\)</span></p></li>
+</ul>
+<p>The likelihood function:</p>
+<ol type="1">
+<li><p>For a single game l where team j beats team k, the probability is: <span class="math inline">\(P(\text{j beats k}) = \Phi\left(\frac{a_j-a_k}{\sigma}\right)\)</span></p></li>
+<li><p>The log-likelihood of this outcome is: <span class="math inline">\(\log P(\text{j beats k}) = \log\Phi\left(\frac{a_j-a_k}{\sigma}\right)\)</span></p></li>
+<li><p>For all games combined, the log-likelihood is: <span class="math inline">\(\log L(a) = \sum_{l=1}^{m} \log\Phi\left(\frac{a_{w(l)}-a_{l(l)}}{\sigma}\right)\)</span>, where w(l) is the winner of game l and l(l) is the loser.</p></li>
+<li><p>Maximum likelihood estimation seeks to maximize this log-likelihood, which is equivalent to minimizing the negative log-likelihood (Boyd &amp; Vandenberghe, 2004, Section 7.1.1): <span class="math inline">\(\min_{a} -\log L(a) = \min_{a} -\sum_{l=1}^{m} \log\Phi\left(\frac{a_{w(l)}-a_{l(l)}}{\sigma}\right)\)</span></p></li>
+<li><p>Using the game incidence matrix A, for each game l:</p></li>
+</ol>
+<ul>
+<li><p>If A[i,l] = 1, team i won</p></li>
+<li><p>If A[i,l] = -1, team i lost</p></li>
+<li><p>We can rewrite the difference in abilities as: <span class="math inline">\(a_{w(l)}-a_{l(l)} = \sum_{i=0}^{n-1} A_{il}a_i\)</span></p></li>
+</ul>
+<p>As a result, the optimization problem: <span class="math display">\[\min_{a} -\sum_{l=1}^{m} \log\Phi\left(\frac{\sum_{i=0}^{n-1} A_{il}a_i}{\sigma}\right)\]</span></p>
+<p>The function <span class="math inline">\(\log\Phi(z)\)</span> is concave, and <span class="math inline">\(-\log\Phi(z)\)</span> is convex in z. Since the arguments <span class="math inline">\(\frac{\sum_{i=0}^{n-1} A_{il}a_i}{\sigma}\)</span> are linear in a, and compositions of convex functions with linear functions preserve convexity, our objective function is convex.</p>
+<p>The complete formulation is: <span class="math display">\[\begin{aligned}
+\min_{a \in \mathbb{R}^n} &amp;-\sum_{l=1}^{m} \log \Phi (\frac{\sum_{i=0}^{n-1} A_{il}a_i}{\sigma})\\
+\text{subject to: } &amp;a_0 = 0 \\
+&amp;-3 \leq a_i \leq 3, \quad i=0,\ldots,n-1
+\end{aligned}\]</span></p>
+<p>This is a convex optimization problem because: The objective function is convex; The equality constraint <span class="math inline">\(a_0 = 0\)</span> is linear (thus convex); The inequality constraints<span class="math inline">\(-3 \leq a_i \leq 3\)</span> define a convex set.</p>
+<ol start="2" type="a">
+<li><p>The optimization problem was solved using a solver from CVXPY, with the log_normcdf function. We obtained the team abilities shown below. As a result, Team 0 is the strongest team (with ability fixed at 0), followed by Teams 4 and 5 with abilities around -0.5. Team 7 is the weakest team, reaching the lower bound of -3.0. These ability estimates reflect the observed game outcomes in the tournament. For example, Team 0 won all 9 games while Team 7 lost all 9 games as shown below. The abilities can be used to predict win probabilities for any pair of teams using the <span class="math inline">\(P(\text{j beats k}) = \Phi\left(\frac{a_j-a_k}{\sigma}\right)\)</span>.</p></li>
+<li><p>For each test matchup between team <span class="math inline">\(j^{(i)}\)</span> and team <span class="math inline">\(k^{(i)}\)</span>, we predict the winner using: <span class="math inline">\(\hat{y}^{(i)} = \mathrm{sign}(\hat{a}_{j^{(i)}} - \hat{a}_{k^{(i)}}).\)</span> If the ability difference is positive, team j wins, otherwise, team k wins. In case the sign is 0, we break ties in favor of the first team.</p></li>
+</ol>
+<p>We then compared our ML-based forecasts to the last-year’s winner heuristic: for each pair <span class="math inline">\((j,k)\)</span>, we simply assume the same team that won in training wins in test. This approach simply assumes that the same team that won in the training dataset will also win in the test dataset.</p>
+<p>The results:</p>
+<ul>
+<li><p>ML-based prediction accuracy is 93.33%, correctly predicted 42 out of 45 games.</p></li>
+<li><p>Simple prediction method accuracy is 100.00%, correctly predicted 45 out of 45 games</p></li>
+</ul>
+<p>The three games that the ML model incorrectly predicted:</p>
+<ul>
+<li><p>Game 20: Team 3 vs Team 6. The ML model predicted Team 6 would win (ability -0.543) over Team 3 (ability -0.697), but Team 3 actually won.</p></li>
+<li><p>Game 23: Team 3 vs Team 9. The ML model predicted Team 3 would win (ability -0.697) over Team 9 (ability -0.707), but Team 9 actually won.</p></li>
+<li><p>Game 31: Team 5 vs Team 6. The ML model predicted Team 5 would win (ability -0.533) over Team 6 (ability -0.543), but Team 6 actually won.</p></li>
+</ul>
+<p>All three incorrect predictions involved games with very small ability differences between the teams, suggesting that games between closely matched teams are harder to predict accurately. The perfect accuracy of the simple prediction method suggests that the tournament results were highly consistent between years, with every matchup having the same outcome in both tournaments. Although the simple heuristic achieves 100% here, the ML model provides calibrated win-probabilities; can handle brand-new pairings; can be threshold-tuned (e.g.&nbsp;at 0.55 instead of 0.5) to balance false positives/negatives.</p>
+<div id="a2501e47" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load data</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span>  pd.read_csv(<span class="st">'https://media.githubusercontent.com/media/georgehagstrom/DATA609Spring2025/refs/heads/main/website/assignments/labs/labData/AMat_train.csv'</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>data.head(), data.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+Index: 45 entries, 0 to 44
+Data columns (total 10 columns):
+ #   Column  Non-Null Count  Dtype
+---  ------  --------------  -----
+ 0   0       45 non-null     int64
+ 1   1       45 non-null     int64
+ 2   2       45 non-null     int64
+ 3   3       45 non-null     int64
+ 4   4       45 non-null     int64
+ 5   5       45 non-null     int64
+ 6   6       45 non-null     int64
+ 7   7       45 non-null     int64
+ 8   8       45 non-null     int64
+ 9   9       45 non-null     int64
+dtypes: int64(10)
+memory usage: 3.9 KB</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>(   0  1  2  3  4  5  6  7  8  9
+ 0  1 -1  0  0  0  0  0  0  0  0
+ 1  1  0 -1  0  0  0  0  0  0  0
+ 2  1  0  0 -1  0  0  0  0  0  0
+ 3  1  0  0  0 -1  0  0  0  0  0
+ 4  1  0  0  0  0 -1  0  0  0  0,
+ None)</code></pre>
+</div>
+</div>
+<div id="ebf2b39c" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract size</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> data.values</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>m, n <span class="op">=</span> A.shape</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Abilities a[0]…a[n-1]</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> cp.Variable(n)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Scale factor using sigma</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>sigma <span class="op">=</span> <span class="fl">0.25</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>scale <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> sigma</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Vector of margins z of length m</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#scale * sum_i A[l,i] * a[i]</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> scale <span class="op">*</span> (A <span class="op">@</span> a)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Negative log‑likelihood objective</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>objective <span class="op">=</span> <span class="op">-</span>cp.<span class="bu">sum</span>(cp.log_normcdf(z))</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#Constraints, gauge + box</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>constraints <span class="op">=</span> [</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    a[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">0</span>,    <span class="co">#the first ability to zero</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    a <span class="op">&gt;=</span> <span class="op">-</span><span class="dv">3</span>,      <span class="co">#lower bound</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    a <span class="op">&lt;=</span> <span class="dv">3</span>        <span class="co">#upper bound</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="co">#Solve</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>problem <span class="op">=</span> cp.Problem(cp.Minimize(objective), constraints)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>problem.solve()</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>a_hat <span class="op">=</span> a.value</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Estimate of team abilities:"</span>)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, ai <span class="kw">in</span> <span class="bu">enumerate</span>(a_hat):</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f" Team </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>ai<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="co">#Win probabilities for validation</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Sample win probabilities:"</span>)</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(Team 0 beats Team 7): </span><span class="sc">{</span>norm<span class="sc">.</span>cdf((a_hat[<span class="dv">0</span>] <span class="op">-</span> a_hat[<span class="dv">7</span>]) <span class="op">/</span> sigma)<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(Team 5 beats Team 7): </span><span class="sc">{</span>norm<span class="sc">.</span>cdf((a_hat[<span class="dv">5</span>] <span class="op">-</span> a_hat[<span class="dv">7</span>]) <span class="op">/</span> sigma)<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="co">#Win/Loss Summary</span></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>wins <span class="op">=</span> (A <span class="op">==</span> <span class="dv">1</span>).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>losses <span class="op">=</span> (A <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Win/Loss Summary:"</span>)</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Team </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>wins[i]<span class="sc">}</span><span class="ss"> wins, </span><span class="sc">{</span>losses[i]<span class="sc">}</span><span class="ss"> losses"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimate of team abilities:
+ Team 0: -0.000
+ Team 1: -2.120
+ Team 2: -0.697
+ Team 3: -2.560
+ Team 4: -0.533
+ Team 5: -0.543
+ Team 6: -1.240
+ Team 7: -3.000
+ Team 8: -0.707
+ Team 9: -1.680
+
+Sample win probabilities:
+P(Team 0 beats Team 7): 1.000
+P(Team 5 beats Team 7): 1.000
+
+Win/Loss Summary:
+Team 0: 9 wins, 0 losses
+Team 1: 2 wins, 7 losses
+Team 2: 6 wins, 3 losses
+Team 3: 1 wins, 8 losses
+Team 4: 7 wins, 2 losses
+Team 5: 7 wins, 2 losses
+Team 6: 4 wins, 5 losses
+Team 7: 0 wins, 9 losses
+Team 8: 6 wins, 3 losses
+Team 9: 3 wins, 6 losses</code></pre>
+</div>
+</div>
+<div id="e1f5e6e1" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load test data</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> pd.read_csv(<span class="st">'https://media.githubusercontent.com/media/georgehagstrom/DATA609Spring2025/refs/heads/main/website/assignments/labs/labData/team_data_test.csv'</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>i_ind <span class="op">=</span> test_df[<span class="st">'team_1'</span>].astype(<span class="bu">int</span>) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>j_ind <span class="op">=</span> test_df[<span class="st">'team_2'</span>].astype(<span class="bu">int</span>) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>y_true <span class="op">=</span> test_df[<span class="st">'result'</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Predict by sign(a_hat[i] - a_hat[j])</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>y_pred_ml <span class="op">=</span> np.sign(a_hat[i_ind] <span class="op">-</span> a_hat[j_ind])</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>y_pred_ml[y_pred_ml <span class="op">==</span> <span class="dv">0</span>] <span class="op">=</span> <span class="dv">1</span> <span class="co">#In case of ties, predict team_1 wins</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>accuracy_ml <span class="op">=</span> np.mean(y_pred_ml <span class="op">==</span> y_true)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Mapping from sorted pair -&gt; game row</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>pair_to_row <span class="op">=</span> {</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">tuple</span>(<span class="bu">sorted</span>(np.where(A[l]<span class="op">!=</span><span class="dv">0</span>)[<span class="dv">0</span>])): l</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> l <span class="kw">in</span> <span class="bu">range</span>(m)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Predict using last year's results</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>y_pred_simple <span class="op">=</span> np.array([</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="cf">if</span> A[pair_to_row[<span class="bu">tuple</span>(<span class="bu">sorted</span>((ti,tj)))], ti]<span class="op">==</span><span class="dv">1</span> <span class="cf">else</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ti, tj <span class="kw">in</span> <span class="bu">zip</span>(i_ind, j_ind)</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>accuracy_simple <span class="op">=</span> np.mean(y_pred_simple <span class="op">==</span> y_true)</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co">#Number of correct predictions</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>ml_correct <span class="op">=</span> np.<span class="bu">sum</span>(y_pred_ml <span class="op">==</span> y_true)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>simple_correct <span class="op">=</span> np.<span class="bu">sum</span>(y_pred_simple <span class="op">==</span> y_true)</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"ML-based prediction accuracy: </span><span class="sc">{</span>accuracy_ml<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%"</span>)</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Correctly predicted: </span><span class="sc">{</span>ml_correct<span class="sc">}</span><span class="ss"> out of </span><span class="sc">{</span><span class="bu">len</span>(y_true)<span class="sc">}</span><span class="ss"> games"</span>)</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Simple Prediction Method: </span><span class="sc">{</span>accuracy_simple<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%"</span>)</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Correctly predicted: </span><span class="sc">{</span>simple_correct<span class="sc">}</span><span class="ss"> out of </span><span class="sc">{</span><span class="bu">len</span>(y_true)<span class="sc">}</span><span class="ss"> games"</span>)</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="co">#Analyze incorrect predictions</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>incorrect_indices <span class="op">=</span> np.where(y_pred_ml <span class="op">!=</span> y_true)[<span class="dv">0</span>]</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(incorrect_indices) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Incorrect predictions by ML model:"</span>)</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> idx <span class="kw">in</span> incorrect_indices:</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>        team1 <span class="op">=</span> i_ind[idx] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>        team2 <span class="op">=</span> j_ind[idx] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Game </span><span class="sc">{</span>idx<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">: Team </span><span class="sc">{</span>team1<span class="sc">}</span><span class="ss"> vs Team </span><span class="sc">{</span>team2<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Team abilities: </span><span class="sc">{</span>a_hat[i_ind[idx]]<span class="sc">:.3f}</span><span class="ss"> vs </span><span class="sc">{</span>a_hat[j_ind[idx]]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Predicted winner: Team </span><span class="sc">{</span>team1 <span class="cf">if</span> y_pred_ml[idx] <span class="op">==</span> <span class="dv">1</span> <span class="cf">else</span> team2<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Actual winner: Team </span><span class="sc">{</span>team1 <span class="cf">if</span> y_true[idx] <span class="op">==</span> <span class="dv">1</span> <span class="cf">else</span> team2<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">The ML model made no incorrect predictions."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ML-based prediction accuracy: 93.33%
+Correctly predicted: 42 out of 45 games
+
+Simple Prediction Method: 100.00%
+Correctly predicted: 45 out of 45 games
+
+Incorrect predictions by ML model:
+
+Game 20: Team 3 vs Team 6
+Team abilities: -0.697 vs -0.543
+Predicted winner: Team 6
+Actual winner: Team 3
+
+Game 23: Team 3 vs Team 9
+Team abilities: -0.697 vs -0.707
+Predicted winner: Team 3
+Actual winner: Team 9
+
+Game 31: Team 5 vs Team 6
+Team abilities: -0.533 vs -0.543
+Predicted winner: Team 5
+Actual winner: Team 6</code></pre>
+</div>
+</div>
+</section>
+<section id="problem-3-flux-balance-analysis-in-systems-biology.-exercise-21.3-in-cvx-additional-exercises" class="level2">
+<h2 class="anchored" data-anchor-id="problem-3-flux-balance-analysis-in-systems-biology.-exercise-21.3-in-cvx-additional-exercises">Problem 3: Flux balance analysis in systems biology. (Exercise 21.3 in CVX Additional Exercises)</h2>
+<p>Flux balance analysis is based on a very simple model of the reactions going on in a cell, keeping track only of the gross rate of consumption and production of various chemical species within the cell. Based on the known stoichiometry of the reactions, and known upper bounds on some of the reaction rates, we can compute bounds on the other reaction rates, or cell growth, for example.</p>
+<p>We focus on <span class="math inline">\(m\)</span> metabolites in a cell, labeled <span class="math inline">\(M_1\)</span> , . . . , <span class="math inline">\(M_m\)</span> . There are <span class="math inline">\(n\)</span> reactions going on, labeled <span class="math inline">\(R_1\)</span> , . . . , <span class="math inline">\(R_n\)</span> , with nonnegative reaction rates <span class="math inline">\(v_1\)</span> , . . . , <span class="math inline">\(v_n\)</span> . In our particular case, we will be working with a simplified model of cell metabolism having 9 reactions and 6 metabolites. Each reaction has a (known) stoichiometry, which tells us the rate of consumption and production of the metabolites per unit of reaction rate. The stoichiometry data is given by the stoichiometry matrix <span class="math inline">\(S \in \mathbb{R}^{m\times n}\)</span> , defined as follows: <span class="math inline">\(S_{ij}\)</span> is the rate of production of <span class="math inline">\(M_i\)</span> due to unit reaction rate <span class="math inline">\(v_j = 1\)</span>. Here we consider consumption of a metabolite as negative production; so <span class="math inline">\(S_{ij} = −2\)</span>, for example, means that reaction <span class="math inline">\(\mathbb{R}^j\)</span> causes metabolite <span class="math inline">\(M_i\)</span> to be consumed at a rate <span class="math inline">\(2v_j\)</span> .</p>
+<p>As an example, suppose reaction <span class="math inline">\(R_1\)</span> has the form <span class="math inline">\(M_1 \to M_2 + 2M_3\)</span> . The consumption rate of <span class="math inline">\(M_1\)</span> , due to this reaction, is <span class="math inline">\(v_1\)</span> ; the production rate of <span class="math inline">\(M_2\)</span> is <span class="math inline">\(v_1\)</span> ; and the production rate of <span class="math inline">\(M_3\)</span> is <span class="math inline">\(2v_1\)</span> . (The reaction <span class="math inline">\(R_1\)</span> has no effect on metabolites <span class="math inline">\(M_4\)</span> , . . . , <span class="math inline">\(M_m\)</span> .) This corresponds to a first column of <span class="math inline">\(S\)</span> of the form <span class="math inline">\((−1, 1, 2, 0, \dots , 0)\)</span>.</p>
+<p>Reactions are also used to model flow of metabolites into and out of the cell. For example, suppose that reaction <span class="math inline">\(R_2\)</span> corresponds to the flow of metabolite <span class="math inline">\(M_1\)</span> into the cell, with <span class="math inline">\(v_2\)</span> giving the flow rate. This corresponds to a second column of <span class="math inline">\(S\)</span> of the form <span class="math inline">\((1, 0, . . . , 0)\)</span>.</p>
+<p>The last reaction, <span class="math inline">\(R_n\)</span> , corresponds to biomass creation, or cell growth, so the reaction rate <span class="math inline">\(v_n\)</span> is the cell growth rate. The last column of <span class="math inline">\(S\)</span> gives the amounts of metabolites used or created per unit of cell growth rate. Since our reactions include metabolites entering or leaving the cell, as well as those converted to biomass within the cell, we have conservation of the metabolites, which can be expressed as <span class="math inline">\(Sv = 0\)</span>. In addition, we are given upper limits on some of the reaction rates, which we express as <span class="math inline">\(v \preceq v^{\mathrm{max}}\)</span> , where we set <span class="math inline">\(v_{j}^{\mathrm{max}} = \infty\)</span> if no upper limit on reaction rate <span class="math inline">\(j\)</span> is known. The goal is to find the maximum possible cell growth rate (i.e., largest possible value of <span class="math inline">\(v_n\)</span> ) consistent with the constraints:</p>
+<p><span class="math display">\[
+\mathrm{max}_v v_9 \\
+Sv = 0 \\
+v \succeq 0 \\
+v \preceq v^{\mathrm{max}}
+\]</span></p>
+<p>The questions below pertain to the data found in <a href="https://github.com/georgehagstrom/DATA609Spring2025/blob/main/website/assignments/labs/labData/fba_S.csv">fba_S.csv</a> and <a href="https://github.com/georgehagstrom/DATA609Spring2025/blob/main/website/assignments/labs/labData/fba_vmax.csv">fba_vmax.csv</a>, which contain the Stoichiometric Matrix and the upper bounds on the reaction fluxes, respectively. This exercise was inspired by the following paper: <a href="https://www.liebertpub.com/doi/abs/10.1089/153623103322452413">Segre et all 2003</a></p>
+<ol type="a">
+<li><p>Find the maximum possible cell growth rate <span class="math inline">\(G^{\star}\)</span> , as well as optimal Lagrange multipliers for the reaction rate limits. How sensitive is the maximum growth rate to the various reaction rate limits?</p></li>
+<li><p>Essential genes and synthetic lethals. For simplicity, we’ll assume that each reaction is controlled by an associated gene, i.e., gene <span class="math inline">\(G_i\)</span> controls reaction <span class="math inline">\(R_i\)</span> . Knocking out a set of genes associated with some reactions has the effect of setting the reaction rates (or equivalently, the associated v max entries) to zero, which of course reduces the maximum possible growth rate. If the maximum growth rate becomes small enough or zero, it is reasonable to guess that knocking out the set of genes will kill the cell. An essential gene is one that when knocked out reduces the maximum growth rate below a given threshold <span class="math inline">\(G^{\mathrm{min}}\)</span> . (Note that <span class="math inline">\(G_n\)</span> is always an essential gene.) A synthetic lethal is a pair of non-essential genes that when knocked out reduces the maximum growth rate below the threshold. Find all essential genes and synthetic lethals for the given problem instance, using the threshold <span class="math inline">\(G^{\mathrm{min}} = 0.2G^{\star}\)</span> .</p></li>
+</ol>
+<p><strong>Solution:</strong></p>
+<ol type="a">
+<li>The objective is to maximize the cell-growth rate <span class="math inline">\(v_9\)</span> subject to:</li>
+</ol>
+<p><span class="math display">\[\text{Metabolite conservation:} \ Sv=0,\]</span> <span class="math display">\[\text{Reaction rate limits:} v \succeq 0, v \preceq v^{\mathrm{max}}.\]</span></p>
+<p>We have stoichiometric matrix <span class="math inline">\(S \in \mathbb{R}^{6×9}\)</span> (from fba_S.csv, the matrix as loaded from the CSV is 9 by 6, which we transpose for the standard form of the optimization problem) with 6 metabolites (<span class="math inline">\(M_1 \ldots M_6\)</span>) and 9 reactions (<span class="math inline">\(R_1 \ldots R_9\)</span>). We also have upper bounds <span class="math inline">\(v^{max} \in \mathbb{R}^9\)</span> (from fba_vmax.csv).</p>
+<p>Let <span class="math inline">\(\nu \in \mathbb{R}^6\)</span> be the dual variables for the equality constraints <span class="math inline">\(Sv=0\)</span> and <span class="math inline">\(\lambda \in \mathbb{R}^9_{\geq 0}\)</span> the dual variables for the inequality constraints <span class="math inline">\(v \leq v^{max}\)</span> (Boyd &amp; Vandenberghe, 2004, Section 5.1.1). The dual LP is (Boyd &amp; Vandenberghe, 2004, Section 5.2.1):</p>
+<p><span class="math display">\[\mathrm{min}_{\lambda \geq 0, \nu} \ (v^\mathrm{max})^T \lambda\]</span> <span class="math display">\[\text{subject to}: S^T \nu + \lambda \geq c,\]</span></p>
+<p>where c is the cost vector (with -1 in position 9 and 0 elsewhere), the dual objective <span class="math inline">\((v^{\mathrm{max}})^T \lambda\)</span> is the “minimum”cost” of relaxing the upper-bounds so that one unit of growth becomes feasible, dual variables <span class="math inline">\(\lambda\)</span> associated with the upper bound constraints have the interpretation of sensitivity values: <span class="math inline">\(\lambda_j = \frac{\partial G^*}{\partial v_j^{\mathrm{max}}}\)</span> (Boyd &amp; Vandenberghe, 2004, Section 5.6.3). It means that <span class="math inline">\(\lambda_j\)</span> gives the rate of change of the objective function with respect to changes in the upper bound constraint (Boyd &amp; Vandenberghe, 2004, Section 5.5.2). If <span class="math inline">\(\lambda_j &gt; 0\)</span>, increasing <span class="math inline">\(v_j^{\mathrm{max}}\)</span> will increase the maximum growth rate. If <span class="math inline">\(\lambda_j = 0\)</span>, small changes in <span class="math inline">\(v_j^{\mathrm{max}}\)</span> won’t affect the maximum growth rate (Boyd &amp; Vandenberghe, 2004, Section</p>
+<p>The computed maximum growth rate is <span class="math inline">\(G^* = 13.55\)</span> (the maximum possible biomass production rate (v9)). The optimal reaction rates vector: <span class="math inline">\(v^* = (10.1, 4.2, 5.9, 3.7, 3.7, 0.25, 6.15, 0.25, 13.55)^T\)</span>.</p>
+<p>Three reactions are operating at their upper bounds, acting as limiting factors for growth: R1 (upper bound = 10.1); R3 (upper bound = 5.9); R5 (upper bound = 3.7). The shadow price vector <span class="math inline">\(\lambda\)</span> returned by result.upper.marginals is non-negative; its i-th component equals the marginal benefit (in units <span class="math inline">\(\Delta G^*\)</span>) of relaxing the upper bound of reaction i by one unit, but it is zero for every reaction that is not at its limit. In the code we used lambda_ineq = -result.upper.marginals, HiGHS defines the reduced cost as <span class="math inline">\(-\lambda\)</span>, so we flip the sign to obtain <span class="math inline">\(\lambda \geq 0\)</span>.</p>
+<p>The sensitivity of the maximum growth rate to these limiting reaction rate bounds: R1 Sensitivity = 0.5 (each additional unit of <span class="math inline">\(v_1^{\mathrm{max}}\)</span> raises <span class="math inline">\(G^*\)</span> by 0.5); R3 Sensitivity = 0.5 (each additional unit of <span class="math inline">\(v_3^{\mathrm{max}}\)</span> raises <span class="math inline">\(G^*\)</span> by 0.5); R5 Sensitivity = 1.5 (each additional unit of <span class="math inline">\(v_5^{\mathrm{max}}\)</span> raises <span class="math inline">\(G^*\)</span> by 1.5).</p>
+<p>R5 is the most limiting reaction with the highest sensitivity (1.5). Each unit increase in R5’s upper bound would increase the growth rate by 1.5 units, making it the most effective target for improving cell growth.</p>
+<p>The dual variables (<span class="math inline">\(\nu\)</span>) for the metabolite constraints represent the shadow value of one extra unit of metabolite i supplied to the network: M1 0.5 (providing one extra unit of M1 would increase growth rate by 0.5); M2 0.5 (providing one extra unit of M2 would increase growth rate by 0.5); M3 1.0 (providing one extra unit of M3 would increase growth rate by 1.0); M4 1.0 (providing one extra unit of M4 would increase growth rate by 1.0); M5 1.5 (providing one extra unit of M5 would increase growth rate by 1.5); M6 0 (additional M6 would not impact growth rate). Metabolite M5 has the highest shadow price (1.5), meaning it provides the highest marginal value to the system. This directly corresponds to the sensitivity we observed for reaction R5, which produces M5.</p>
+<p>The three binding constraints in our system (reactions R1, R3, and R5) represent distinct metabolic bottlenecks. R1 (sensitivity 0.5) reaction likely represents an input flux (note the stoichiometric matrix shows it produces M1 with no consumed metabolites). Its limitation suggests restricted nutrient uptake capacity. R3 (sensitivity 0.5) reaction converts M1 to M3. Its limitation impacts downstream processes dependent on M3, including reactions that ultimately contribute to biomass production. R5 (sensitivity 1.5) reaction produces metabolite M5 and has the highest sensitivity, making it the primary bottleneck in the system. Increasing its capacity would have the most significant impact on growth rate.</p>
+<p>These shadow-price results point to R5 as the prime engineering target: a unit increase in its capacity yields a 1.5 unit gain in growth, whereas equivalent expansions of R1 or R3 yield only 0.5. The high shadow price for metabolite M5 (1.5) suggests that supplying additional M5 to the network (if biologically feasible) would significantly enhance growth.</p>
+<p>The plots clearly demonstrate our findings. The sensitivity chart shows that reactions R1, R3, and R5 have positive dual variables (<span class="math inline">\(\lambda\)</span> values), with R5 having the highest value (1.5), confirming it as the most limiting reaction. The optimal reaction rates chart shows that R9 (growth/biomass production) has the highest rate (13.55), followed by R1 (10.1), which is the primary input flux. The reaction rate utilization chart confirms that reactions R1, R3, and R5 are operating at 100% of their upper bounds, validating that they are the key bottlenecks in the metabolic network. The other reactions are operating well below their capacity constraints.</p>
+<ol start="2" type="a">
+<li>We need to find essential genes and synthetic lethals using the threshold <span class="math inline">\(G^{min} = 0.2G^* = 0.2(13.55) = 2.71\)</span>. Two essential genes:</li>
+</ol>
+<ul>
+<li><p>G1, controls R1: This reaction likely represents an input flux that produces metabolite M1, as seen from the stoichiometric matrix. When knocked out, the growth rate effectively drops to zero, indicating its essential role in the metabolic network.</p></li>
+<li><p>G9, controls R9: As expected, G9 is essential since R9 directly represents the biomass production (growth) reaction. Knocking out this gene immediately sets the growth rate to zero.</p></li>
+</ul>
+<p>Synthetic lethal gene pairs:</p>
+<ul>
+<li><p>G2-G3, control R2-R3: R2 converts M1 to M2, while R3 converts M1 to M3. When both are knocked out simultaneously, the cell loses critical metabolic pathways needed for growth.</p></li>
+<li><p>G2-G7, control R2-R7: R2 produces M2 from M1, while R7 converts M3 to M4. Together, they form a synthetic lethal pair, suggesting these reactions collaborate in essential metabolic pathways.</p></li>
+<li><p>G4-G7, control R4-R7: R4 involves M2, M4, and M5, while R7 converts M3 to M4. This synthetic lethality suggests the importance of balanced M4 production in the network.</p></li>
+<li><p>G5-G7, control R5-R7: R5 produces M5 (identified as the most growth-limiting metabolite in part a), while R7 produces M4. Their combined knockout proves lethal, highlighting the importance of both metabolites.</p></li>
+</ul>
+<p>The zero growth rates tell us that the LP becomes infeasible when these genes are knocked out, meaning the metabolic network cannot function at all. R1 is critical for network viability (essential gene), while R5, despite having the highest sensitivity in part (a), is not individually essential but becomes lethal when paired with R7. The multiple synthetic lethal pairs involving R7 suggest it plays a central role in alternative metabolic pathways.</p>
+<div id="60a35287" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load data</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>fba_s <span class="op">=</span> pd.read_csv(<span class="st">'https://media.githubusercontent.com/media/georgehagstrom/DATA609Spring2025/refs/heads/main/website/assignments/labs/labData/fba_S.csv'</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>fba_vmax <span class="op">=</span> pd.read_csv(<span class="st">'https://media.githubusercontent.com/media/georgehagstrom/DATA609Spring2025/refs/heads/main/website/assignments/labs/labData/fba_vmax.csv'</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>fba_s, fba_s.info(), fba_vmax, fba_vmax.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+Index: 9 entries, R1 to R9
+Data columns (total 6 columns):
+ #   Column  Non-Null Count  Dtype
+---  ------  --------------  -----
+ 0   M1      9 non-null      int64
+ 1   M2      9 non-null      int64
+ 2   M3      9 non-null      int64
+ 3   M4      9 non-null      int64
+ 4   M5      9 non-null      int64
+ 5   M6      9 non-null      int64
+dtypes: int64(6)
+memory usage: 504.0+ bytes
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+Index: 9 entries, R1 to R9
+Data columns (total 1 columns):
+ #   Column  Non-Null Count  Dtype  
+---  ------  --------------  -----  
+ 0   vmax    9 non-null      float64
+dtypes: float64(1)
+memory usage: 144.0+ bytes</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>(          M1  M2  M3  M4  M5  M6
+ reaction                        
+ R1         1   0   0   0   0   0
+ R2        -1   1   0   0   0   0
+ R3        -1   0   1   0   0   0
+ R4         0  -1   0   2  -1   0
+ R5         0   0   0   0   1   0
+ R6         0  -2   1   0   0   1
+ R7         0   0  -1   1   0   0
+ R8         0   0   0   0   0  -1
+ R9         0   0   0  -1   0   0,
+ None,
+            vmax
+ reaction       
+ R1         10.1
+ R2        100.0
+ R3          5.9
+ R4        100.0
+ R5          3.7
+ R6        100.0
+ R7        100.0
+ R8        100.0
+ R9        100.0,
+ None)</code></pre>
+</div>
+</div>
+<div id="6803f8ac" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Stoichiometric matrix, vmax values</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>S_raw <span class="op">=</span> fba_s.values</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>S <span class="op">=</span> S_raw.T</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>vmax <span class="op">=</span> fba_vmax[<span class="st">'vmax'</span>].values</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">#9 reactions and 6 metabolites</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>n_metabolites, n_reactions <span class="op">=</span> S.shape</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Optimization problem</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Transpose S, S is provided as reactions x metabolites</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co">#We need metabolites x reactions</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> np.zeros(n_reactions)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>c[<span class="dv">8</span>] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span> <span class="co">#maximize v9</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>A_eq <span class="op">=</span> S</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>b_eq <span class="op">=</span> np.zeros(n_metabolites)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>bounds <span class="op">=</span> [(<span class="dv">0</span>, vmax[i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_reactions)]</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Solve the linear program</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> linprog(c, A_eq<span class="op">=</span>A_eq, b_eq<span class="op">=</span>b_eq, bounds<span class="op">=</span>bounds, method<span class="op">=</span><span class="st">'highs'</span>)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="co">#Optimal solution</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>optimal_rates <span class="op">=</span> result.x</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>optimal_growth_rate <span class="op">=</span> optimal_rates[<span class="dv">8</span>]</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>lambda_ineq <span class="op">=</span> <span class="op">-</span>result.upper.marginals  <span class="co">#Upper bound duals</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>nu_eq <span class="op">=</span> result.eqlin.marginals  <span class="co">#Metabolite balance duals</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Maximum growth rate (G*): </span><span class="sc">{</span>optimal_growth_rate<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Optimal reaction rates:"</span>)</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, j <span class="kw">in</span> <span class="bu">zip</span>(fba_s.index, optimal_rates):</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>j<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Dual variables (λ, reaction rate limits):"</span>)</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, j <span class="kw">in</span> <span class="bu">zip</span>(fba_s.index, lambda_ineq):</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">max</span>(<span class="dv">0</span>, j)<span class="sc">:.1f}</span><span class="ss">"</span>)</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Dual variables (ν, metabolite balance constraints):"</span>)</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, j <span class="kw">in</span> <span class="bu">enumerate</span>(nu_eq, start<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  M</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">max</span>(<span class="dv">0</span>, j)<span class="sc">:.1f}</span><span class="ss">"</span>)</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a><span class="co">#Sensitivity analysis</span></span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Reaction | Rate | Upper Bound | Binding? | λ"</span>)</span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">65</span>)</span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>binding_reactions <span class="op">=</span> []</span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_reactions):</span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>    binding <span class="op">=</span> np.isclose(optimal_rates[i], vmax[i], atol<span class="op">=</span><span class="fl">1e-5</span>)</span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> binding:</span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a>        binding_reactions.append(i)</span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>    bind_str <span class="op">=</span> <span class="st">"Yes"</span> <span class="cf">if</span> binding <span class="cf">else</span> <span class="st">"No"</span></span>
+<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>fba_s<span class="sc">.</span>index[i]<span class="sc">}</span><span class="ss"> | </span><span class="sc">{</span>optimal_rates[i]<span class="sc">:6.3f}</span><span class="ss"> | </span><span class="sc">{</span>vmax[i]<span class="sc">:10.2f}</span><span class="ss"> |"</span></span>
+<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f" </span><span class="sc">{</span>bind_str<span class="sc">:^7}</span><span class="ss"> | </span><span class="sc">{</span><span class="bu">max</span>(<span class="dv">0</span>, lambda_ineq[i])<span class="sc">:.1f}</span><span class="ss">"</span>)</span>
+<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a><span class="co">#Sensitivity verification through direct perturbation</span></span>
+<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Verifying sensitivities through perturbation:"</span>)</span>
+<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a>perturb <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> binding_reactions:</span>
+<span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a>    new_bounds <span class="op">=</span> <span class="bu">list</span>(bounds)</span>
+<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a>    new_bounds[i] <span class="op">=</span> (<span class="dv">0</span>, vmax[i]<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>perturb))</span>
+<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a>    new_result   <span class="op">=</span> linprog(c, A_eq<span class="op">=</span>A_eq, b_eq<span class="op">=</span>b_eq,</span>
+<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a>                       bounds<span class="op">=</span>new_bounds, method<span class="op">=</span><span class="st">'highs'</span>)</span>
+<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a>    growth_increase <span class="op">=</span> new_result.x[<span class="dv">8</span>] <span class="op">-</span> optimal_growth_rate</span>
+<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a>    theoretical <span class="op">=</span> lambda_ineq[i] <span class="op">*</span> vmax[i] <span class="op">*</span> perturb</span>
+<span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a>    error_pct <span class="op">=</span> <span class="bu">abs</span>((growth_increase <span class="op">-</span> theoretical)<span class="op">/</span>theoretical)<span class="op">*</span><span class="dv">100</span></span>
+<span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>fba_s<span class="sc">.</span>index[i]<span class="sc">}</span><span class="ss">:"</span>)</span>
+<span id="cb17-65"><a href="#cb17-65" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  A 1% increase in the limit would increase growth rate by </span><span class="sc">{</span>growth_increase<span class="sc">:.2f}</span><span class="ss"> units"</span>)</span>
+<span id="cb17-66"><a href="#cb17-66" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Theoretical change: </span><span class="sc">{</span>theoretical<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb17-67"><a href="#cb17-67" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Difference: </span><span class="sc">{</span>error_pct<span class="sc">:.2f}</span><span class="ss">%"</span>)</span>
+<span id="cb17-68"><a href="#cb17-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-69"><a href="#cb17-69" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">4</span>), sharey<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb17-70"><a href="#cb17-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-71"><a href="#cb17-71" aria-hidden="true" tabindex="-1"></a><span class="co">#Bar chart of sensitivities</span></span>
+<span id="cb17-72"><a href="#cb17-72" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].bar(fba_s.index, lambda_ineq)</span>
+<span id="cb17-73"><a href="#cb17-73" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Reaction'</span>)</span>
+<span id="cb17-74"><a href="#cb17-74" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Sensitivity'</span>)</span>
+<span id="cb17-75"><a href="#cb17-75" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Shadow prices for upper-bound constraints'</span>)</span>
+<span id="cb17-76"><a href="#cb17-76" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].grid(axis<span class="op">=</span><span class="st">'y'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb17-77"><a href="#cb17-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-78"><a href="#cb17-78" aria-hidden="true" tabindex="-1"></a><span class="co">#Bar chart of optimal reaction rates</span></span>
+<span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].bar(fba_s.index, optimal_rates)</span>
+<span id="cb17-80"><a href="#cb17-80" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Reaction'</span>)</span>
+<span id="cb17-81"><a href="#cb17-81" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Reaction rate'</span>)</span>
+<span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Optimal reaction rates'</span>)</span>
+<span id="cb17-83"><a href="#cb17-83" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].grid(axis<span class="op">=</span><span class="st">'y'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb17-84"><a href="#cb17-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-85"><a href="#cb17-85" aria-hidden="true" tabindex="-1"></a><span class="co">#Bar chart of reaction rates as a percentage of their upper bounds</span></span>
+<span id="cb17-86"><a href="#cb17-86" aria-hidden="true" tabindex="-1"></a>utilization <span class="op">=</span> optimal_rates <span class="op">/</span> vmax <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb17-87"><a href="#cb17-87" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].bar(fba_s.index, utilization)</span>
+<span id="cb17-88"><a href="#cb17-88" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_xlabel(<span class="st">'Reaction'</span>)</span>
+<span id="cb17-89"><a href="#cb17-89" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_ylabel(<span class="st">'</span><span class="sc">% o</span><span class="st">f vmax'</span>)</span>
+<span id="cb17-90"><a href="#cb17-90" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_title(<span class="st">'Capacity utilisation of each reaction'</span>)</span>
+<span id="cb17-91"><a href="#cb17-91" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].axhline(<span class="dv">100</span>, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Upper bound'</span>)</span>
+<span id="cb17-92"><a href="#cb17-92" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].legend()</span>
+<span id="cb17-93"><a href="#cb17-93" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].grid(axis<span class="op">=</span><span class="st">'y'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb17-94"><a href="#cb17-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-95"><a href="#cb17-95" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb17-96"><a href="#cb17-96" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Maximum growth rate (G*): 13.55
+
+Optimal reaction rates:
+  R1: 10.10
+  R2: 4.20
+  R3: 5.90
+  R4: 3.70
+  R5: 3.70
+  R6: 0.25
+  R7: 6.15
+  R8: 0.25
+  R9: 13.55
+
+Dual variables (λ, reaction rate limits):
+  R1: 0.5
+  R2: 0.0
+  R3: 0.5
+  R4: 0.0
+  R5: 1.5
+  R6: 0.0
+  R7: 0.0
+  R8: 0.0
+  R9: 0.0
+
+Dual variables (ν, metabolite balance constraints):
+  M1: 0.5
+  M2: 0.5
+  M3: 1.0
+  M4: 1.0
+  M5: 1.5
+  M6: 0.0
+Reaction | Rate | Upper Bound | Binding? | λ
+-----------------------------------------------------------------
+R1 | 10.100 |      10.10 |   Yes   | 0.5
+R2 |  4.200 |     100.00 |   No    | 0.0
+R3 |  5.900 |       5.90 |   Yes   | 0.5
+R4 |  3.700 |     100.00 |   No    | 0.0
+R5 |  3.700 |       3.70 |   Yes   | 1.5
+R6 |  0.250 |     100.00 |   No    | 0.0
+R7 |  6.150 |     100.00 |   No    | 0.0
+R8 |  0.250 |     100.00 |   No    | 0.0
+R9 | 13.550 |     100.00 |   No    | 0.0
+
+Verifying sensitivities through perturbation:
+R1:
+  A 1% increase in the limit would increase growth rate by 0.05 units
+  Theoretical change: 0.05
+  Difference: 0.00%
+R3:
+  A 1% increase in the limit would increase growth rate by 0.03 units
+  Theoretical change: 0.03
+  Difference: 0.00%
+R5:
+  A 1% increase in the limit would increase growth rate by 0.06 units
+  Theoretical change: 0.06
+  Difference: 0.00%</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Applications_Statistics_Machine_Learning_files/figure-html/cell-9-output-2.png" width="1430" height="374" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="321515d4" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Threshold</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>G_min <span class="op">=</span> <span class="fl">0.2</span> <span class="op">*</span> optimal_growth_rate</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Threshold G_min = </span><span class="sc">{</span>G_min<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Growth rate with knocked out genes</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calc_growth_with_knockout(reactions):</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    new_bounds <span class="op">=</span> <span class="bu">list</span>(bounds)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Knocked out reaction bounds to zero</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> r <span class="kw">in</span> reactions:</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        new_bounds[r] <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Solve LP with new bounds</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    result_gene <span class="op">=</span> linprog(c, A_eq<span class="op">=</span>A_eq, b_eq<span class="op">=</span>b_eq, bounds<span class="op">=</span>new_bounds, method<span class="op">=</span><span class="st">'highs'</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> result_gene.success:</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result_gene.x[<span class="dv">8</span>]</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="co">#Essential genes</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>essential_genes <span class="op">=</span> []</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_reactions):</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    growth <span class="op">=</span> calc_growth_with_knockout([i])</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> growth <span class="op">&lt;</span> G_min:</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>        essential_genes.append(i)</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Essential genes:"</span>)</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gene <span class="kw">in</span> essential_genes:</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"G</span><span class="sc">{</span>gene<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (controls R</span><span class="sc">{</span>gene<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">): Growth rate = </span><span class="sc">{</span><span class="bu">abs</span>(calc_growth_with_knockout([gene]))<span class="sc">:.1f}</span><span class="ss">"</span>)</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="co">#Synthetic lethals</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>non_essential <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_reactions) <span class="cf">if</span> i <span class="kw">not</span> <span class="kw">in</span> essential_genes]</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>synthetic_lethals <span class="op">=</span> []</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(non_essential)):</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(i<span class="op">+</span><span class="dv">1</span>, <span class="bu">len</span>(non_essential)):</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>        gene1 <span class="op">=</span> non_essential[i]</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>        gene2 <span class="op">=</span> non_essential[j]</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>        growth <span class="op">=</span> calc_growth_with_knockout([gene1, gene2])</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> growth <span class="op">&lt;</span> G_min:</span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>            synthetic_lethals.append((gene1, gene2))</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Synthetic lethal gene pairs:"</span>)</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gene1, gene2 <span class="kw">in</span> synthetic_lethals:</span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>    growth <span class="op">=</span> calc_growth_with_knockout([gene1, gene2])</span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"G</span><span class="sc">{</span>gene1<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">-G</span><span class="sc">{</span>gene2<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (control R</span><span class="sc">{</span>gene1<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">-R</span><span class="sc">{</span>gene2<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">): Growth rate = </span><span class="sc">{</span><span class="bu">abs</span>(growth)<span class="sc">:.1f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Threshold G_min = 2.71
+Essential genes:
+G1 (controls R1): Growth rate = 0.0
+G9 (controls R9): Growth rate = 0.0
+Synthetic lethal gene pairs:
+G2-G3 (control R2-R3): Growth rate = 0.0
+G2-G7 (control R2-R7): Growth rate = 0.0
+G4-G7 (control R4-R7): Growth rate = 0.0
+G5-G7 (control R5-R7): Growth rate = 0.0</code></pre>
+</div>
+</div>
+</section>
+<section id="reference" class="level2">
+<h2 class="anchored" data-anchor-id="reference">Reference</h2>
+<ol type="1">
+<li><p>Boyd, S., &amp; Vandenberghe, L. (2004). <em>Convex optimization</em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511804441" class="uri">https://doi.org/10.1017/CBO9780511804441</a></p></li>
+<li><p>Disciplined Convex Programming. (n.d.). <a href="https://www.cvxpy.org/tutorial/dcp/index.html" class="uri">https://www.cvxpy.org/tutorial/dcp/index.html</a></p></li>
+<li><p>SciPy Community. (n.d.). scipy.optimize.linprog — SciPy v1.15.2 manual. SciPy. <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html" class="uri">https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html</a></p></li>
+</ol>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
